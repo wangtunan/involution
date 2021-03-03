@@ -7,6 +7,30 @@
   <title>手写getQueryString</title>
 </head>
 <body>
-  
+  <script>
+    function getQueryString (url, name) {
+      if (!url) {
+        return undefined
+      }
+      const index = url.indexOf('?')
+      if (index === -1) {
+        return undefined
+      }
+      const arr = url.substring(index + 1).split('&')
+      let result = ''
+      for (let index = 0; index < arr.length; index++) {
+        const [key, value] = arr[index].split('=')
+        if (key === name) {
+          result = decodeURIComponent(value)
+          break
+        }
+      }
+      return result
+    }
+    const url = 'https://www.baidu.com/s?id=123&name=why&phone=13876769797'
+    console.log(getQueryString(url, 'id'))
+    console.log(getQueryString(url, 'name'))
+    console.log(getQueryString(url, 'phone'))
+  </script>
 </body>
 </html>

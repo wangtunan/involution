@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>手写bind</title>
+</head>
+<body>
+  <script>
+    Function.prototype.myBind = function (context) {
+      if (typeof this !== 'function') {
+        throw new TypeError('not a function')
+      }
+      const args = [...arguments].slice(1)
+      const self = this
+      return function F () {
+        if (this instanceof F) {
+          return new self(...args, ...arguments)
+        }
+        return self.apply(context, args.concat([...arguments]))
+      }
+    }
+    function foo (firstName, lastName) {
+      this.firstName = firstName
+      this.lastName = lastName
+      console.log(this.name)
+    }
+    const obj = {
+      name: 'obj'
+    }
+    const bindFunc = foo.myBind(obj, 'AAA', 'BBB')
+    bindFunc('CCC')
+    const instance = new bindFunc('DDD')
+    console.log(instance)
+  </script>
+</body>
+</html>
