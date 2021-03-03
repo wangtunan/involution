@@ -7,6 +7,54 @@
   <title>手写原生Ajax请求</title>
 </head>
 <body>
-  
+  <script>
+    // 1.get请求
+    const params = {
+      name: 'AAA',
+      age: 123,
+      address: '广东'
+    }
+    function get (url, params) {
+      const xhr = new XMLHttpRequest()
+      const paramsStr = normalizeParams(params)
+      url = `${url}?${paramsStr}`
+      xhr.open('get', url)
+      xhr.send()
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            console.log(xhr.response)
+          }
+        }
+      }
+    }
+    // 2.post请求
+    function post (url, params) {
+      const xhr = new XMLHttpRequest()
+      const paramsStr = normalizeParams(params)
+      xhr.open('post', url)
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
+      xhr.send(paramsStr)
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            console.log(xhr.response)
+          }
+        }
+      }
+    }
+    function normalizeParams (params) {
+      if (!params || Object.keys(params).length === 0) {
+        return ''
+      }
+      const paramsArr = Object.keys(params).map((key, index) => {
+        return `${index?'&':''}${key}=${params[key]}`
+      })
+      return paramsArr.join('')
+    }
+    const url = 'http://www.dell-lee.com/react/api/header.json'
+    get(url, params)
+    post(url, params)
+  </script>
 </body>
 </html>
