@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>手写Apply</title>
+</head>
+<body>
+  <script>
+    Function.prototype.myApply = function (context) {
+      if (typeof this !== 'function') {
+        throw new TypeError('not a function')
+      }
+      const symbolFn = Symbol()
+      const args = arguments[1] ? arguments[1].slice() : undefined
+      context = context || window
+      context[symbolFn] = this
+      const result = args ? context[symbolFn](...args) : context[symbolFn]()
+      delete context[symbolFn]
+      return result
+    }
+    const obj = {
+      name: 'obj'
+    }
+    function foo (first, second) {
+      console.log(this.name)
+      console.log(first, second)
+    }
+    foo.myApply(obj, [1, 2, 3])
+  </script>
+</body>
+</html>

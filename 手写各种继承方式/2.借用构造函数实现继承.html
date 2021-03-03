@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>借用构造函数实现继承</title>
+</head>
+<body>
+  <script>
+    function Animal (name) {
+      this.name = name
+      this.colors = ['red']
+    }
+    Animal.prototype.eat = function () {
+      console.log('Animal eating')
+    }
+    function Dog (name) {
+      Animal.call(this, name)
+    }
+    const dog1 = new Dog('AAA')
+    const dog2 = new Dog('BBB')
+
+    dog1.colors.push('green')
+    console.log(dog1.colors)
+    console.log(dog2.colors)
+
+    console.log(dog1 instanceof Dog)
+    console.log(dog1 instanceof Animal)
+
+    console.log(dog1.eat())
+    console.log(dog2.eat())
+  </script>
+</body>
+</html>
