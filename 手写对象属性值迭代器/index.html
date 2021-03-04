@@ -7,6 +7,34 @@
   <title>手写对象属性值迭代器</title>
 </head>
 <body>
-  
+  <script>
+    // 自定义对象属性值迭代器，使之能够使用for-of循环遍历对象属性值
+    const obj = {
+      name: 'AAA',
+      age: 23,
+      address: '广东'
+    }
+    Object.defineProperty(obj, Symbol.iterator, {
+      configurable: true,
+      writable: false,
+      enumerable: false,
+      value: function () {
+        const self = this
+        let index = 0
+        const keys = Object.keys(self)
+        return {
+          next: function () {
+            return {
+              done: index >= keys.length,
+              value: self[keys[index++]]
+            }
+          }
+        }
+      }
+    })
+    for (const value of obj) {
+      console.log(value)
+    }
+  </script>
 </body>
 </html>

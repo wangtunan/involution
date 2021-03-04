@@ -7,6 +7,22 @@
   <title>手写函数防抖debounce</title>
 </head>
 <body>
-  
+  <script>
+    function debounce (fn, delay = 500) {
+      let timer = null
+      return function () {
+        if (timer) {
+          clearTimeout(timer)
+        }
+        const self = this
+        timer = setTimeout(() => {
+          fn.call(self, ...arguments)
+        }, delay)
+      }
+    }
+    window.addEventListener('resize', debounce(() => {
+      console.log('window resize debounce')
+    }, 2000))
+  </script>
 </body>
 </html>
