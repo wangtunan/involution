@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>手写图片懒加载-使用代理模式</title>
+</head>
+<body>
+  <script>
+    const loadingSrc = 'https://www.imooc.com/static/img/index/logo2020.png'
+    const imgSrc = 'https://img1.sycdn.imooc.com/5c09123400014ba418720632.jpg'
+    const myImage = (function(){
+      const imgNode = document.createElement('img')
+      document.body.appendChild(imgNode)
+      return {
+        setSrc: function (src) {
+          imgNode.src = src
+        }
+      }
+    })()
+    const proxyImage = (function(){
+      const img = new Image()
+      img.onload = function () {
+        myImage.setSrc(img.src)
+      }
+      return {
+        setSrc: function (src) {
+          myImage.setSrc(loadingSrc)
+          img.src = src
+        }
+      }
+    })()
+    proxyImage.setSrc(imgSrc)
+  </script>
+</body>
+</html>

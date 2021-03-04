@@ -7,5 +7,33 @@
   <title>手写函数AOP</title>
 </head>
 <body>
+  <script>
+    Function.prototype.before = function (beforeFn) {
+      const self = this
+      return function beforeFunc () {
+        const args = arguments
+        beforeFn.apply(this, args)
+        return self.apply(this, args)
+      }
+    }
+    Function.prototype.after = function (afterFn) {
+      const self = this
+      return function afterFunc () {
+        const args = arguments
+        const result = self.apply(this, args)
+        afterFn.apply(this, args)
+        return result
+      }
+    }
+    function func () {
+      console.log('2')
+    }
+    const newFunc = func.before(() => {
+      console.log('1')
+    }).after(() => {
+      console.log('3')
+    })
+    newFunc() // 1 2 3
+  </script>
 </body>
 </html>
