@@ -7,6 +7,13 @@
   <title>手写获取随机数getRandom方法</title>
 </head>
 <body>
-  
+  <script>
+    function getRandom (min, max) {
+      return Math.floor(Math.random() * Math.abs(max - min + 1) + min)
+    }
+    console.log(getRandom(1, 10))
+    console.log(getRandom(10, 1))
+    console.log(getRandom(20, 24))
+  </script>
 </body>
 </html>

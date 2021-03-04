@@ -7,6 +7,36 @@
   <title>手写分时函数</title>
 </head>
 <body>
-  
+  <script>
+    // 把1s创建1000个DOM，改成每隔200ms创建10个
+    function timeChunk (array, callback, count, interval) {
+      let timer = null
+      const start = function () {
+        for (let index = 0; index < Math.min(count || 1, array.length); index++) {
+          callback(array.shift())
+        }
+      }
+      return function () {
+        timer = setInterval(() => {
+          if (array.length === 0) {
+            clearInterval(timer)
+            timer = null
+            return
+          }
+          start()
+        }, interval || 200)
+      }
+    }
+    const arr = []
+    for (let index = 0; index < 1000; index++) {
+      arr.push(index)
+    }
+    const renderDOM = timeChunk(arr, (data) => {
+      const dom = document.createElement('div')
+      dom.innerHTML = data
+      document.body.appendChild(dom)
+    }, 10, 200)
+    renderDOM()
+  </script>
 </body>
 </html>

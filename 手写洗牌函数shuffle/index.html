@@ -7,6 +7,25 @@
   <title>手写洗牌方法shuffle</title>
 </head>
 <body>
-  
+  <script>
+    // shuffle:给定一个数组，打乱数组的顺序
+    function getRandom (min, max) {
+      return Math.floor(Math.random() * Math.abs(max - min + 1) + min)
+    }
+    function shuffle (array) {
+      const arr = array.slice()
+      for (let i = 0; i < arr.length; i++) {
+        const j = getRandom(0, i)
+        const temp = arr[i]
+        arr[i] = arr[j]
+        arr[j] = temp
+      }
+      return arr
+    }
+    let arr = [1, 2, 3, 4, 5]
+    arr = shuffle(arr)
+    arr = shuffle(arr)
+    arr = shuffle(arr)
+  </script>
 </body>
 </html>

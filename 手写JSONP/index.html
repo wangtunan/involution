@@ -7,6 +7,36 @@
   <title>手写JSONP方法</title>
 </head>
 <body>
-  
+  <script>
+    function JSONP (url, data, callback) {
+      const cbName = 'callback_' + new Date().getTime()
+      const queryString = normalizeParams(data)
+      const hasIndex = url.indexOf('?') !== -1
+      url = `${hasIndex ? url : url + '?'}${queryString}&jsoncallback=${cbName}`
+      const script = document.createElement('script')
+      script.src = url
+      window[cbName] = function (data) {
+        callback(data)
+        document.body.removeChild(script)
+      }
+      document.body.appendChild(script)
+    }
+    function normalizeParams (data) {
+      if (!data || Object.keys(data).length === 0) {
+        return ''
+      }
+      return Object.keys(data).map((key, index) => {
+        return `${index ? '&' : ''}${key}=${data[key]}`
+      })
+    }
+    const params = {
+      name: 'AAA',
+      age: 23,
+      address: '广东'
+    }
+    JSONP('https://www.runoob.com/try/ajax/jsonp.php', params, function (data) {
+      console.log(data)
+    })
+  </script>
 </body>
 </html>

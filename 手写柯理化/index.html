@@ -7,6 +7,27 @@
   <title>Document</title>
 </head>
 <body>
-  
+  <script>
+    function currying (fn) {
+      let args = []
+      return function curryingFunc () {
+        if (arguments.length === 0) {
+          return fn.apply(this, args)
+        } else {
+          args = [...args, ...arguments]
+          return curryingFunc
+        }
+      }
+    }
+    function add (...args) {
+      return args.reduce((a, b) => a + b, 0)
+    }
+    const addCurrying = currying(add)
+    addCurrying(1)
+    addCurrying(2)
+    addCurrying(3)
+    addCurrying(4)
+    console.log(addCurrying())
+  </script>
 </body>
 </html>
