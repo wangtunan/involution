@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>generator方式实现flat方法</title>
+</head>
+<body>
+  <script>
+    // MDN: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
+    function * flat (arr = [], depth = 1) {
+      if (arr.length === 0) {
+        return []
+      }
+      for (const item of arr) {
+        if (Array.isArray(item) && depth > 0) {
+          yield * flat(item, depth - 1)
+        } else {
+          yield item
+        }
+      }
+    }
+    const arr = [1, 2, 3, [1, 2, 3, 4, [2, 3, 4]]]
+    const myResult1 = [...flat(arr, 1)]
+    const originResult1 = arr.flat(1)
+    const myResult2 = [...flat(arr, Infinity)]
+    const originResult2 = arr.flat(Infinity)
+    console.log(myResult1)      // [1, 2, 3, 1, 2, 3, 4, [2, 3, 4]]
+    console.log(originResult1)  // [1, 2, 3, 1, 2, 3, 4, [2, 3, 4]]
+    console.log(myResult2 )     // [1, 2, 3, 1, 2, 3, 4, 2, 3, 4]
+    console.log(originResult2 ) // [1, 2, 3, 1, 2, 3, 4, 2, 3, 4]
+  </script>
+</body>
+</html>
