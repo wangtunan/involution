@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>手写Vue nextTick方法</title>
+</head>
+<body>
+  <script>
+    let pending = false
+    let timeFunc
+    const callbacks = []
+    function flushCallbacks () {
+      pending = false
+      const cbs = callbacks.slice()
+      callbacks.length = 0
+      for (let index = 0, len = cbs.length; index < len; index++) {
+        cbs[index]()
+      }
+    }
+
+    function invokeCallback (callback, context) {
+      try {
+        callback.call(context)
+      } catch {
+        console.log('invoke nextTick callback error')
+      }
+    }
+    
+    function nextTick (cb, context) {
+      context = context || window
+      let _resolve
+      callbacks.push(() => {
+        if (cb) {
+          invokeCallback(cb, context)
+        } else if (_resolve) {
+          _resolve(context)
+        }
+      })
+      if (!pending) {
+        pending = true
+        timeFunc()
+      }
+      if (!cb && typeof Promise !== 'undefined') {
+        return new Promise(resolve => {
+          _resolve = resolve
+        })
+      }
+    }
+    function setTimeFunc () {
+      if (typeof Promise !== 'undefined') {
+        const p = Promise.resolve()
+        timeFunc = () => {
+          p.then(flushCallbacks)
+        }
+      } else if (typeof MutationObserver !== 'undefined') {
+        let number = 1
+        const observer = new MutationObserver(flushCallbacks)
+        const textNode = document.createTextNode(String(number))
+        observer.observe(textNode, {
+          characterData: true
+        })
+        timeFunc = () => {
+          number = (number + 1) % 2
+          textNode.data = number
+        }
+      } else if (typeof setImmediate !== 'undefined') {
+        timeFunc = () => {
+          setImmediate(flushCallbacks)
+        }
+      } else {
+        timeFunc = () => {
+          setTimeout(flushCallbacks, 0)
+        }
+      }
+    }
+    setTimeFunc()
+
+    nextTick(() => {
+      console.log('nextTick callback')
+    })
+    nextTick().then(() => {
+      console.log('nextTick promise')
+    })
+  </script>
+</body>
+</html>

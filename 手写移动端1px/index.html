@@ -8,12 +8,23 @@
   <title>移动端1px</title>
   <style>
     .box {
-      width: 200px;
+      width: 1200px;
+      display: flex;
+      flex-wrap: nowrap;
+    }
+    .box-item {
+      margin: 10px;
+      flex: 0 0 25%;
       height: 200px;
     }
   </style>
 </head>
 <body>
-  <div class="box border-bottom-1px"></div>
+  <div class="box">
+    <div class="box-item border-top-1px"></div>
+    <div class="box-item border-left-1px"></div>
+    <div class="box-item border-bottom-1px"></div>
+    <div class="box-item border-right-1px"></div>
+  </div>
 </body>
 </html>

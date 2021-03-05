@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>class实现继承</title>
+</head>
+<body>
+  <script>
+    class Person {
+      constructor (name) {
+        this.name = name
+        this.colors = ['red']
+      }
+      sayName () {
+        console.log(this.name)
+      }
+      static create (name) {
+        return new Person(name)
+      }
+    }
+    class Student extends Person {
+      constructor (name) {
+        super(name)
+        this.age = 23
+      }
+    }
+    const stu1 = new Student('stu1')
+    console.log(stu1.name)                // stu1
+    console.log(stu1.age)                 // 23
+    console.log(stu1.colors)              // ['red']            
+    console.log(stu1 instanceof Student)  // true
+    console.log(stu1 instanceof Person)   // true
+    stu1.sayName()                        // stu1
+    
+    const stu2 = Student.create('stu2')
+    console.log(stu2.age)                 // undefined
+    console.log(stu2 instanceof Student)  // false
+    console.log(stu2 instanceof Person)   // true
+  </script>
+</body>
+</html>
