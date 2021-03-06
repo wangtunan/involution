@@ -7,6 +7,45 @@
   <title>手写数组reduce方法</title>
 </head>
 <body>
-  
+  <script>
+    // MDN: Array.prototype.reduce
+    Array.prototype.myReduce = function (callback, initialValue) {
+      if (this === null) {
+        throw new TypeError('Array.prototype.reduce called on null or undefined')
+      }
+      if (typeof callback !== 'function') {
+        throw new TypeError(`${callback} is not a function`)
+      }
+      const array = Object(this)
+      const len = array.length >>> 0
+      let index = 0
+      let result
+      // 处理初始值
+      if (arguments.length > 1) {
+        result = initialValue
+      } else {
+        // example: [,,,,5]
+        while(index < len && !(index in array)) {
+          index++
+        }
+        if (index >= len) {
+          throw new TypeError('Reduce of empty array with no initial value')
+        }
+        value = array[index++]
+      }
+      while (index < len) {
+        if (index in array) {
+          result = callback(result, array[index], index, array)
+        }
+        index++
+      }
+      return result
+    }
+    const array = [1, , 2, 3, , , 5]
+    const myResult = array.myReduce((acc, cur) => acc + cur, 0)
+    const originResult = array.reduce((acc, cur) => acc + cur, 0)
+    console.log(myResult)     // 11
+    console.log(originResult) // 11
+  </script>
 </body>
 </html>

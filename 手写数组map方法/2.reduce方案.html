@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reduce循环方案实现数组map方法</title>
+</head>
+<body>
+  <script>
+    // MDN: Array.prototype.reduce
+    Array.prototype.myMap = function (callback, context) {
+      return this.reduce((acc, cur, index, array) => {
+        acc[index] = callback.call(context, cur, index, array)
+        return acc
+      }, [])
+    }
+    const arr = [1, 2, 3, , 4]
+    const myResult = arr.myMap(value => value + 1)
+    const originResult = arr.map(value => value + 1)
+    console.log(myResult)     // [2, 3, 4, empty, 5]
+    console.log(originResult) // [2, 3, 4, empty, 5]
+  </script>
+</body>
+</html>

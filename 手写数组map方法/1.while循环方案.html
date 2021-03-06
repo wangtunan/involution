@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>while循环方案实现数组map方法</title>
+</head>
+<body>
+  <script>
+    // MDN: Array.prototype.map
+    Array.prototype.myMap = function (callback, context) {
+      if (this === null) {
+        throw new TypeError('this is null or not defined')
+      }
+      if (typeof callback !== 'function') {
+        throw new TypeError(`${callback} is not a function`)
+      }
+      let arr = Object(this)
+      let thisArg = arguments.length > 1 ? arguments[1] : undefined
+      const len = arr.length >>> 0
+      let result = new Array(len)
+      let index = 0
+      while (index < len) {
+        let value, mapValue
+        if (index in arr) {
+          value = arr[index]
+          mapValue = callback.call(this.thisArg, value, index, arr)
+          result[index] = mapValue
+        }
+        index++
+      }
+      return result
+    }
+    const arr = [1, 2, 3, , 4]
+    const myResult = arr.myMap(value => value + 1)
+    const originResult = arr.map(value => value + 1)
+    console.log(myResult)     // [2, 3, 4, empty, 5]
+    console.log(originResult) // [2, 3, 4, empty, 5]
+  </script>
+</body>
+</html>

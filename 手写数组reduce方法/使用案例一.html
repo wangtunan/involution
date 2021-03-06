@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>使用reduce顺序执行promise</title>
+</head>
+<body>
+  <script>
+    function p1 (val) {
+      return new Promise(resolve => {
+        resolve(val * 1)
+      })
+    }
+    function p2 (val) {
+      return new Promise(resolve => {
+        resolve(val * 2)
+      })
+    }
+    function p3 (val) {
+      return val * 3
+    }
+    function runPromiseInSequence (promiseArr, val) {
+      return promiseArr.reduce((promiseChain, currentFunc) => {
+        return promiseChain.then(currentFunc)
+      }, Promise.resolve(val))
+    }
+
+    const promiseArr = [p1, p2, p3]
+    runPromiseInSequence(promiseArr, 1).then(console.log)
+  </script>
+</body>
+</html>

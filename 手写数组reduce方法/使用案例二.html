@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>reduce实现管道函数pie</title>
+</head>
+<body>
+  <script>
+    // pie顺序执行每一个参数函数
+    const pieFunc1 = x => x + 1
+    const pieFunc2 = x => x + 2
+    const pieFunc3 = x => x + 3
+    function pie () {
+      const funcArr = [...arguments]
+      return function (val) {
+        return funcArr.reduce((acc, fn) => {
+          acc = fn(acc)
+          return acc
+        }, val)
+      }
+    }
+    const func1 = pie(pieFunc1, pieFunc2)
+    const func2 = pie(pieFunc1, pieFunc3)
+    console.log(func1(0))   // 3
+    console.log(func2(10))  // 14
+  </script>
+</body>
+</html>
