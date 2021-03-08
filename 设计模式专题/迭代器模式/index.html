@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>迭代器模式</title>
+</head>
+<body>
+  <script>
+    // 迭代器模式：是指提供一种顺序访问一个聚合对象中各个元素，但又不需要暴露该对象的内部表示。
+    // 迭代器分为两种，一种是内部迭代器，例如forEach, map等，另外一种是外部迭代器，例如Iterator
+    
+    // 内部迭代器我们比较熟悉，我们一forEach方法为例
+    const arr = [1, 2, 3, 4]
+    arr.forEach(item => {
+      console.log(item)
+    })
+
+    // 外部迭代器需要我们手动调用迭代方法，最常见的就是Iterator
+    function createIterator (items) {
+      let index = 0
+      return {
+        next: function () {
+          const done = index >= items.length
+          const value = done ? undefined : items[index++]
+          return {
+            value: value,
+            done: done
+          }
+        }
+      }
+    }
+    const iterator = createIterator(arr)
+    console.log(iterator.next().value)  // 1
+    console.log(iterator.next().value)  // 2
+    console.log(iterator.next().value)  // 3
+    console.log(iterator.next().value)  // 4
+    console.log(iterator.next().value)  // undefined
+  </script>
+</body>
+</html>

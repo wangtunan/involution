@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>命令模式</title>
+</head>
+<body>
+  <button type="button" id="button1">刷新菜单</button>
+  <button type="button" id="button2">添加子菜单</button>
+  <button type="button" id="button3">删除子菜单</button>
+  <script>
+    // 命令模式：命令指的是一个执行某些特定事件的指令。有时候需要向某些对象发送请求，
+    // 但并不知道请求的接受者是谁，也不知道被请求的操作是什么，这种时候我们需要命令模式这种松耦合的方式，
+    // 来消除请求的发送者和接受者之间的耦合关系。
+
+    // 案例：有一个用户界面，该界面有很多个按钮，因为项目复杂，所以让A去负责按钮的绘制，B去撰写按钮点击的具体行为，最后将组装起来。
+    const button1 = document.getElementById('button1')
+    const button2 = document.getElementById('button2')
+    const button3 = document.getElementById('button3')
+
+    // 定义具体行为
+    const menu = {
+      refresh: function () {
+        console.log('刷新菜单')
+      }
+    }
+    const subMenu = {
+      add: function () {
+        console.log('添加子菜单')
+      },
+      remove: function () {
+        console.log('删除子菜单')
+      }
+    }
+
+    // 将具体行为封装到命令对象中
+    const setCommand = function (button, func) {
+      button.onclick = function () {
+        func()
+      }
+    }
+    const getRefreshCommand = function (receiver) {
+      return function () {
+        receiver.refresh()
+      }
+    }
+    const getAddSubMenuCommand = function (receiver) {
+      return function () {
+        receiver.add()
+      }
+    }
+    const getRemoveSubMenuCommand = function (receiver) {
+      return function () {
+        receiver.remove()
+      }
+    }
+    const refreshCommand = getRefreshCommand(menu)
+    const addCommand = getAddSubMenuCommand(subMenu)
+    const removeCommond = getRemoveSubMenuCommand(subMenu)
+    setCommand(button1, refreshCommand)
+    setCommand(button2, addCommand)
+    setCommand(button3, removeCommond)
+
+    button1.click() // 刷新菜单
+    button2.click() // 添加子菜单
+    button3.click() // 删除子菜单
+  </script>
+</body>
+</html>

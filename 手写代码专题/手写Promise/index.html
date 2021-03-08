@@ -8,103 +8,124 @@
 </head>
 <body>
   <script>
+    // promise三种状态
     const PENDING = 'PENDING'
     const RESOLVED = 'RESOLVED'
     const REJECTED = 'REJECTED'
+
+    // 工具函数
+    function isFunction (func) {
+      return typeof func === 'function'
+    }
+    function isObject (obj) {
+      return typeof obj === 'object' && obj !== null
+    }
     function nextTick (fn) {
       setTimeout(fn, 0)
     }
+
+    // Promise类
     class MyPromise {
       constructor (executor) {
-        this.state = PENDING
+        this.status = PENDING
         this.value = undefined
         this.reason = undefined
+        // 定义为数组，为了支持在resolve之前，多个then
+        // example: promise.then(xxx) promise.then(xxx) 不定义数组第二个会覆盖第一个
         this.resolvedCallbacks = []
         this.rejectedCallbacks = []
 
+        // 表决函数
         const resolve = (value) => {
+          // 上一次表决返回的value可以是一个promise实例
+          if (value instanceof Promise) {
+            return value.then(resolve, reject)
+          }
+          // resolve和reject确保一定要在下一个tick内
+          // example: 先打印2，再打印1
+          // promise.then(() => console.log(1))
+          // console.log(2)
           nextTick(() => {
-            if (this.state === PENDING) {
-              this.state = RESOLVED
+            if (this.status === PENDING) {
+              this.status = RESOLVED
               this.value = value
-              this.resolvedCallbacks.forEach(cb => cb(this.value))
-            }
-          })
-        }
-        const reject = (reason) => {
-          nextTick(() => {
-            if (this.state === PENDING) {
-              this.state = REJECTED
-              this.reason = reason
-              this.rejectedCallbacks.forEach(cb => cb(this.reason))
+              this.resolvedCallbacks.forEach(cb => cb(value))
             }
           })
         }
 
+        // 拒绝函数
+        const reject = (reason) => {
+          nextTick(() => {
+            if (this.status === PENDING) {
+              this.status = REJECTED
+              this.reason = reason
+              this.rejectedCallbacks.forEach(cb => cb(reason))
+            }
+          })
+        }
+
+        // executor为外部传递的，为了安全使用try-catch包裹
         try {
           executor(resolve, reject)
-        } catch(error) {
+        } catch (error) {
           reject(error)
         }
       }
       then (onFulfilled, onRejected) {
-        return new MyPromise((resolve, reject) => {
-          if (this.state === PENDING) {
-            this.resolvedCallbacks.push((value) => {
+        // onFulfilled，onRejected为可选参数，需要处理，这样能够进行then的透传
+        // example: promise.then(null).then(res)
+        onFulfilled = isFunction(onFulfilled) ? onFulfilled : v => v
+        onRejected = isFunction(onRejected) ? onRejected : e => { throw error }
+
+        // 为了支持promise链式回调，需要在then中手动再包裹一层promise
+        // 在第一个then方法的成功回调中执行第二个promise的resolve
+        // 在第一个then方法的拒绝回调中执行第二个promise的reject
+        return new Promise((resolve, reject) => {
+          if (this.status === PENDING) {
+            this.resolvedCallbacks.push(() => {
               try {
-                const x = onFulfilled(value)
-                x.then ? x.then(resolve) :resolve(x)
+                const result = onFulfilled(this.value)
+                resolve(result)
               } catch (error) {
                 reject(error)
               }
             })
-            this.rejectedCallbacks.push((reason) => {
+            this.rejectedCallbacks.push(() => {
               try {
-                const x = onRejected(reason)
-                x.then ? x.then(resolve) : resolve(x)
-              } catch (error) {
-                reject(error)
-              }
-            })
-          } else if (this.state === RESOLVED) {
-            nextTick(() => {
-              try {
-                const x = onFulfilled()
-                x.then ? x.then(resolve) : resolve(x)
-              } catch (error) {
-                reject(error)
-              }
-            })
-            
-          } else if (this.state === REJECTED) {
-            nextTick(() => {
-              try {
-                const x = onRejected()
-                x.then ? x.then(resolve) : resolve(x)
+                const result = onRejected(this.reason)
+                resolve(result)
               } catch (error) {
                 reject(error)
               }
             })
           }
+          if (this.status === RESOLVED) {
+            nextTick(() => {
+              const result = onFulfilled(this.value)
+              resolve(result)
+            })
+          }
+          if (this.status === REJECTED) {
+            nextTick(() => {
+              const result = onRejected(this.reason)
+              reject(result)
+            })
+            
+          }
         })
       }
+      catch (cb) {
+        return this.then(null, cb)
+      }
     }
-
     const promise = new MyPromise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(111)
-      }, 1000)
+      reject('reject')
     })
-    promise.then((res) => {
-      console.log(res)
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(res + 111)
-        }, 0)
-      })
-    }).then(res => {
-      console.log(res)
+    promise.catch(error => {
+      console.log(error)
     })
+    console.log(2)
   </script>
 </body>
 </html>

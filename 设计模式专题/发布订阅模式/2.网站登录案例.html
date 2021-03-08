@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 场景：一个商场网站，有头部header，有导航nav，有购物车cart，有消息列表message等等模块度依赖于登录成功后的用户信息。
+    // 而用户不知道什么时候会登陆。需要将以上各个模块与登录模块做一个发布订阅模式
+
+    const login = {
+      clientList: {},
+      listen: function(key,fn) {
+        if(!this.clientList[key]) {
+          this.clientList[key] = [];
+        }
+        this.clientList[key].push(fn);
+      },
+      trigger: function() {
+        const type = Array.prototype.shift.call(arguments);
+        const fns = this.clientList[type];
+        if(!fns || fns.length<1) {
+          return false;
+        }
+        for (let index = 0; index < fns.length; index++) {
+          fns[index].apply(this,arguments);
+        }
+      }
+    }
+
+    // 头部
+    const header = (function(){
+      login.listen('loginSuccess',function(data) {
+        header.setAvatar(data.avatar);
+      })
+      return {
+        setAvatar: function(avatar) {
+          console.log('设置header头像：'+avatar);
+        }
+      }
+    })()
+
+    // 导航
+    const nav = (function(){
+      login.listen('loginSuccess',function(data) {
+        nav.setAvatar(data.avatar);
+      })
+      return {
+        setAvatar: function(avatar) {
+          console.log('设置nav头像：'+avatar);
+        }
+      }
+    })()
+
+    // 购物车
+    const cart = (function(){
+      login.listen('loginSuccess',function(data) {
+        cart.getOrders(data);
+      })
+      return {
+        getOrders: function(data) {
+          console.log('获取'+data.name+'的购物车订单列表');
+        }
+      }
+    })()
+
+    setTimeout(function() {
+      // 依次输出
+      // 设置header头像：https://www.baidu.com/1.jpg
+      // 设置nav头像：https://www.baidu.com/1.jpg
+      // 获取AAA的购物车订单列表
+      login.trigger('loginSuccess',{name:'AAA',avatar: 'https://www.baidu.com/1.jpg'});
+    }, 1500)
+  </script>
+</body>
+</html>
