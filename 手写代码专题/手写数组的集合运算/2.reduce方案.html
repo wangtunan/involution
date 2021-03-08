@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>手写数组的集合运算：reduce方案</title>
+</head>
+<body>
+  <script>
+    const arr1 = [1, 2, 1, 3, 4, 5]
+    const arr2 = [4, 5, 6, 7]
+    // 并集公式：A∪B={x|x∈A,或x∈B}
+    // 并集：属于集合A或者属于集合B的元素组成的集合，叫做A和B的并集
+    function union (array1, array2) {
+      const combineArray = array1.concat(array2)
+      return combineArray.reduce((acc, cur) => {
+        if (acc.indexOf(cur) === -1) {
+          acc.push(cur)
+        }
+        return acc
+      }, [])
+    }
+    console.log(union(arr1, arr2)) // [1, 2, 3, 4, 5, 6, 7]
+
+    // 交集公式：A∩B= {x|x∈A∧x∈B}
+    // 交集：所有属于集合A且属于集合B的元素所组成的集合，叫做A与B的交集
+    function intersection (array1, array2) {
+      return array1.reduce((acc, cur) => {
+        if (array2.indexOf(cur) !== -1) {
+          acc.push(cur)
+        }
+        return acc
+      }, [])
+    }
+    console.log(intersection(arr1, arr2)) // [4, 5]
+
+    // 补集公式：B - A = { x| x∈B且x∉A}
+    // 补集：所有属于B但不属于A的元素组成的集合，叫做A的补集(差集)
+    function complement (array1, array2) {
+      return array2.reduce((acc, cur) => {
+        if (array1.indexOf(cur) === -1) {
+          acc.push(cur)
+        }
+        return acc
+      }, [])
+    }
+    console.log(complement(arr1, arr2)) // [6, 7]
+  </script>
+</body>
+</html>

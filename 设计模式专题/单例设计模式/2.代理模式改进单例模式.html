@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>代理模式改进单例模式</title>
+</head>
+<body>
+  <script>
+    // 可用代理模式创建一个可随时取消单例的单例设计模式
+    function Sington (name) {
+      this.name = name
+    }
+    const ProxySington = (function () {
+      let instance = null
+      return function (name) {
+        if (!instance) {
+          instance = new Sington(name)
+        }
+        return instance
+      }
+    })()
+    // 使用代理模式的单例设计模式
+    const proxyObj1 = new ProxySington('AAA')
+    const proxyObj2 = new ProxySington('BBB')
+    console.log(proxyObj1 === proxyObj2)  // true
+
+    // 不适用代理，既：取消单例模式
+    const obj1 = new Sington('AAA')
+    const obj2 = new Sington('BBB')
+    console.log(obj1 === obj2) // false
+  </script>
+</body>
+</html>

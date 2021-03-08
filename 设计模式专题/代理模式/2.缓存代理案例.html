@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>代理模式案例：缓存代理</title>
+</head>
+<body>
+  <script>
+    // 缓存代理：为一些开销大的运算结果提供缓存，在下次运算时，如果传递进来的参数跟之前一样，则直接返回。
+    function mult () {
+      console.log('开始计算乘积')
+      const array = [...arguments]
+      return array.reduce((acc, cur) => {
+        acc = acc * cur
+        return acc
+      }, 1)
+    }
+    function plus () {
+      console.log('开始计算累加')
+      const array = [...arguments]
+      return array.reduce((acc, cur) => {
+        acc = acc + cur
+        return acc
+      }, 0)
+    }
+    // 缓存代理工厂
+    function createProxyFactory (fn) {
+      const cache = {}
+      return function () {
+        const args = [...arguments].join(',')
+        if (cache.hasOwnProperty(args)) {
+          return cache[args]
+        }
+        return cache[args] = fn.apply(this, arguments)
+      }
+    }
+    const proxyMult = createProxyFactory(mult)
+    const proxyPlus = createProxyFactory(plus)
+    console.log(proxyMult(1,2,3,4)); // 输出：开始计算乘积 24
+    console.log(proxyMult(1,2,3,4)); // 输出：24
+    console.log(proxyPlus(3,4,5,6)); // 输出：开始计算累加 18
+    console.log(proxyPlus(3,4,5,6)); // 输出: 18
+  </script>
+</body>
+</html>

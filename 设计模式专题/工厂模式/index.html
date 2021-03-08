@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>工厂模式</title>
+</head>
+<body>
+  <script>
+    // 工厂模式：能够解决多个对象重复声明相同属性的问题。
+    class Person {
+      constructor (name, age, address) {
+        this.name = name
+        this.age = age
+        this.address
+      }
+      say () {
+        console.log('person say')
+      }
+    }
+    const p1 = new Person('AAA', 23, '广东')
+    const p2 = new Person('BBB', 25, '浙江')
+  </script>
+</body>
+</html>

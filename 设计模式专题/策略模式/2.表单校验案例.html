@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>策略模式案例：表单校验</title>
+</head>
+<body>
+  <script>
+    // 定义策略对象
+    const strategies = {
+      isEmpty (value, errMsg) {
+        if (value === '') {
+          return errMsg
+        }
+      },
+      minLength (value, length, errMsg) {
+        if (value.length < length) {
+          return errMsg
+        }
+      },
+      isMobile (value, errMsg) {
+        if(!(/^1[34578]\d{9}$/.test(value))) {
+          return errMsg
+        }
+      }
+    }
+    // 定义校验Validator类
+    const form = {
+      userName: 'admin',
+      password: '8888',
+      phone: '18277776666'
+    }
+    function Validator () {
+      this.cache = []
+    }
+    Validator.prototype.add = function (value, rule, msg) {
+      const arr = rule.split(':')
+      this.cache.push(function(){
+        const strategy = arr.shift()
+        arr.unshift(value)
+        arr.push(msg)
+        return strategies[strategy].apply(null, arr)
+      })
+    }
+    Validator.prototype.run = function () {
+      for (let index = 0; index < this.cache.length; index++) {
+        const msg = this.cache[index]()
+        if (msg) {
+          return msg
+        }
+      }
+    }
+    const validateForm = function () {
+      const validator = new Validator()
+      validator.add(form.userName, 'isEmpty', '用户名不能为空')
+      validator.add(form.password, 'minLength:6', '密码长度不能小于6位')
+      validator.add(form.phone, 'isMobile', '手机号格式不正确')
+      return validator.run()
+    }
+    console.log(validateForm()) // 密码长度不能小于6位
+  </script>
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>手写Promise</title>
+</head>
+<body>
+  <script>
+    const PENDING = 'PENDING'
+    const RESOLVED = 'RESOLVED'
+    const REJECTED = 'REJECTED'
+    function nextTick (fn) {
+      setTimeout(fn, 0)
+    }
+    class MyPromise {
+      constructor (executor) {
+        this.state = PENDING
+        this.value = undefined
+        this.reason = undefined
+        this.resolvedCallbacks = []
+        this.rejectedCallbacks = []
+
+        const resolve = (value) => {
+          nextTick(() => {
+            if (this.state === PENDING) {
+              this.state = RESOLVED
+              this.value = value
+              this.resolvedCallbacks.forEach(cb => cb(this.value))
+            }
+          })
+        }
+        const reject = (reason) => {
+          nextTick(() => {
+            if (this.state === PENDING) {
+              this.state = REJECTED
+              this.reason = reason
+              this.rejectedCallbacks.forEach(cb => cb(this.reason))
+            }
+          })
+        }
+
+        try {
+          executor(resolve, reject)
+        } catch(error) {
+          reject(error)
+        }
+      }
+      then (onFulfilled, onRejected) {
+        return new MyPromise((resolve, reject) => {
+          if (this.state === PENDING) {
+            this.resolvedCallbacks.push((value) => {
+              try {
+                const x = onFulfilled(value)
+                x.then ? x.then(resolve) :resolve(x)
+              } catch (error) {
+                reject(error)
+              }
+            })
+            this.rejectedCallbacks.push((reason) => {
+              try {
+                const x = onRejected(reason)
+                x.then ? x.then(resolve) : resolve(x)
+              } catch (error) {
+                reject(error)
+              }
+            })
+          } else if (this.state === RESOLVED) {
+            nextTick(() => {
+              try {
+                const x = onFulfilled()
+                x.then ? x.then(resolve) : resolve(x)
+              } catch (error) {
+                reject(error)
+              }
+            })
+            
+          } else if (this.state === REJECTED) {
+            nextTick(() => {
+              try {
+                const x = onRejected()
+                x.then ? x.then(resolve) : resolve(x)
+              } catch (error) {
+                reject(error)
+              }
+            })
+          }
+        })
+      }
+    }
+
+    const promise = new MyPromise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(111)
+      }, 1000)
+    })
+    promise.then((res) => {
+      console.log(res)
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(res + 111)
+        }, 0)
+      })
+    }).then(res => {
+      console.log(res)
+    })
+  </script>
+</body>
+</html>

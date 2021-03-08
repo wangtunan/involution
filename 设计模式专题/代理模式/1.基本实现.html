@@ -1,0 +1,31 @@
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>代理模式基本实现</title>
+ </head>
+ <body>
+   <script>
+     // 代理模式：为一个对象提供一个代替品或占位符，以便控制对它的直接访问。
+     function Flower () {}
+     const xiaoming = {
+       sendFlower (target) {
+         target.receive(new Flower())
+       }
+     }
+     const classmate = {
+       receive (flower) {
+        girl.receive(flower)
+       }
+     }
+     const girl = {
+       receive (flower) {
+         console.log('girl received flower')
+       }
+     }
+     xiaoming.sendFlower(classmate) // girl received flower
+   </script>
+ </body>
+ </html>

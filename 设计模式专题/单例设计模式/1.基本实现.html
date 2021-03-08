@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>单例设计模式</title>
+</head>
+<body>
+  <script>
+    // 单例设计模式：保证一个类仅有一个实例，并提供一个访问它的全局访问点。
+    // 案例：线程池、全局缓存、浏览器window对象等等
+    
+    // 1、面向对象实现单例
+    class Sington {
+      constructor (name) {
+        this.name = name
+        this.instance = null
+      }
+      static getInstance (name) {
+        if (!this.instance) {
+          this.instance = new Sington(name)
+        }
+        return this.instance
+      }
+    }
+    const obj1 = Sington.getInstance('AAA')
+    const obj2 = Sington.getInstance('BBB')
+    console.log(obj1 === obj2) // true
+
+    // 2.闭包实现单例
+    function NewSington (name) {
+      this.name = name
+    }
+    NewSington.getInstance = (function(){
+      let instance = null
+      return function (name) {
+        if (!instance) {
+          instance = new NewSington(name)
+        }
+        return instance
+      }
+    })()
+    const newObj1 = NewSington.getInstance('AAA')
+    const newObj2 = NewSington.getInstance('BBB')
+    console.log(newObj1 === newObj2) // true
+  </script>
+</body>
+</html>

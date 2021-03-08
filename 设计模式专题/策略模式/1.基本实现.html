@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>策略模式基本实现</title>
+</head>
+<body>
+  <script>
+    // 策略模式：定义一系列算法，把它们一个个封装起来，并且使它们能够相互替换。
+    const strategy = {
+      S: function (salary) {
+        return salary * 3
+      },
+      A: function (salary) {
+        return salary * 2
+      },
+      B: function (salary) {
+        return salary * 1
+      }
+    }
+    const calcBouns = function (level, salary) {
+      return strategy[level](salary)
+    }
+    console.log(calcBouns('S',4000));  // 输出12000
+    console.log(calcBouns('A',3000));  // 输出6000
+    console.log(calcBouns('B',2000));  // 输出2000
+  </script>
+</body>
+</html>
