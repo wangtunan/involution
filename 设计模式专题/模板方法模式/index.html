@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>模板方法模式</title>
+</head>
+<body>
+  <script>
+    // 模板方法模式：它是一种只需要使用继承就可以实现的非常简单的模式。
+    // 模板方法一般由两部分组成，一部分是抽象的父类，另一部分是具体的子类。
+
+    // 案例：煮咖啡和煮茶，可以抽象成如下步骤：把水煮沸 => 泡茶(咖啡) => 倒进杯子 => 添加调料
+    abstract class Beverage {
+      init () {
+        this.boilWater()
+        this.brew()
+        this.pureInCup()
+        this.addCondiments()
+      }
+      boilWater () {
+        console.log('把水煮沸')
+      }
+      abstract brew (): void
+      abstract pureInCup (): void
+      abstract addCondiments (): void
+    }
+    class Tea extends Beverage {
+      brew () {
+        console.log('泡茶')
+      }
+      pureInCup () {
+        console.log('把茶倒进杯子')
+      }
+      addCondiments () {
+        console.log('添加柠檬')
+      }
+    }
+    class Coffee extends Beverage {
+      brew () {
+        console.log('泡咖啡')
+      }
+      pureInCup () {
+        console.log('把咖啡倒进杯子')
+      }
+      addCondiments () {
+        console.log('添加牛奶和糖')
+      }
+    }
+    const tea = new Tea()
+    tea.init()
+
+    const coffee = new Coffee()
+    coffee.init()
+  </script>
+</body>
+</html>

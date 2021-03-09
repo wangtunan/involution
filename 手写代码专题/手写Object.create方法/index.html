@@ -23,7 +23,7 @@
       if (properties !== null && properties !== undefined) {
         Object.defineProperties(ret, properties)
       }
-      // 兼容null
+      // 兼容第一个参数为null
       if (obj === null) {
         ret.__proto__ = null
       }

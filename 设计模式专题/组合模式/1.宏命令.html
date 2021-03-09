@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>组合模式</title>
+</head>
+<body>
+  <script>
+    // 组合模式：将对象组合成树形结构，以表示"部分-整体"的层次结构，在这个树形结构中请求从最顶端的对象向下传递，
+    // 如果当前处理请求的对象是叶子节点，则对请求作出相应处理；如果当前处理请求的对象是组合对象，则遍历该组合对象下的子节点，
+    // 将请求继续传递给这些子节点。
+    
+    // 宏命令：它是一组命令的集合，通过执行宏命令的方式，可以一次执行多个命令
+    const closeCommand = {
+      execute: function () {
+        console.log('关门')
+      }
+    }
+    const openTVCommand = {
+      execute: function () {
+        console.log('打开电视')
+      }
+    }
+    const getMacroCommand = function () {
+      return {
+        commandList: [],
+        add: function (command) {
+          this.commandList.push(command)
+        },
+        execute: function () {
+          if (this.commandList.length === 0) {
+            return
+          }
+          for (let index = 0, len = this.commandList.length; index < len; index++) {
+            this.commandList[index].execute()
+          }
+        }
+      }
+    }
+
+    const macroCommand = getMacroCommand()
+    macroCommand.add(closeCommand)
+    macroCommand.add(openTVCommand)
+    macroCommand.execute() // 关门 打开电视
+  </script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>组合模式：扫面文件案例</title>
+</head>
+<body>
+  <script>
+    // 组合模式：将对象组合成树形结构，以表示"部分-整体"的层次结构，在这个树形结构中请求从最顶端的对象向下传递，
+    // 如果当前处理请求的对象是叶子节点，则对请求作出相应处理；如果当前处理请求的对象是组合对象，则遍历该组合对象下的子节点，
+    // 将请求继续传递给这些子节点。
+    
+    // 文件夹类
+    function Folder (name) {
+      this.name = name
+      this.files = []
+    }
+    Folder.prototype.add = function (file) {
+      this.files.push(file)
+    }
+    Folder.prototype.scan = function () {
+      console.log(`开始扫描文件夹：${this.name}`)
+      for (let index = 0; index < this.files.length; index++) {
+        this.files[index].scan()
+      }
+    }
+
+    // 文件类
+    function File (name) {
+      this.name = name
+    }
+    File.prototype.add = function () {
+      throw new Error('文件下面不能添加文件')
+    }
+    File.prototype.scan = function () {
+      console.log(`开始扫描文件：${this.name}`)
+    }
+
+    const folder = new Folder('学习资料')
+    const folder1 = new Folder('JavaScript学习资料')
+    const folder2 = new Folder('HTML学习资料')
+    const folder3 = new Folder('CSS学习资料')
+
+    const file1 = new File('JavaScript高级程序设计')
+    const file2 = new File('HTML5权威指南')
+    const file3 = new File('HTML5权威指南')
+    const file4 = new File('深入浅出Vue.js')
+
+    folder1.add(file1)
+    folder2.add(file2)
+    folder3.add(file3)
+
+    folder.add(folder1)
+    folder.add(folder2)
+    folder.add(folder3)
+    folder.add(file4)
+
+    folder.scan()
+    // 开始扫描文件夹：学习资料
+    // 开始扫描文件夹：JavaScript学习资料
+    // 开始扫描文件：JavaScript高级程序设计
+    // 开始扫描文件夹：HTML学习资料
+    // 开始扫描文件：HTML5权威指南
+    // 开始扫描文件夹：CSS学习资料
+    // 开始扫描文件：HTML5权威指南
+    // 开始扫描文件：深入浅出Vue.js
+  </script>
+</body>
+</html>

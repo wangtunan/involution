@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // 亨元模式：它是一种用于性能优化的模式，其核心是运用共享技术来有效支持大量细粒度的对象。亨元模式要求将对象的属性划分为内部状态和外部状态
+
+    // 案例：文件上传
+    // 上传方式：可以被公共，内部状态，插件上传，浏览器上传，客户端上传
+    // 文件属性：id，size，name
+    const uploadList = {}
+    let id = 0
+    function Upload (type) {
+      this.type = type
+    }
+    function File () {
+      this.fileName = undefined
+      this.size = 0
+      this.uploadObj = null
+    }
+    File.create = function (type, name, size) {
+      this.fileName = name
+      this.size = size
+      this.uploadObj = uploadFactory.create(type)
+    }
+    const uploadFactory = (function(){
+      const factoryList = {}
+      return {
+        create: function (type) {
+          if (factoryList[type]) {
+            return factoryList[type]
+          }
+          console.log('创建上传对象')
+          return factoryList[type] = new Upload(type)
+        }
+      }
+    })()
+    function startUpload (type, fileList) {
+      for (let index = 0; index < fileList.length; index++) {
+        const file = fileList[index]
+        uploadList[id++] = File.create(type, file.name, file.size)
+      }
+    }
+    startUpload('plugin', [
+      { name: '1.txt', size: 1000 },
+      { name: '2.txt', size: 3000 },
+      { name: '3.txt', size: 5000 }
+    ])
+    startUpload('flash', [
+      { name: '4.txt', size: 1000 },
+      { name: '5.txt', size: 3000 },
+      { name: '6.txt', size: 5000 }
+    ])
+    // 创建上传对象
+    // 创建上传对象
+    
+    // 描述：使用享元模式时，有多少种上传方式，就创建Upload对象多少次，如果不使用享元模式则无法共享Upload对象，
+    // 理论上而言，Upload内部状态越多，共享Upload对象的收益也就越大。
+  </script>
+</body>
+</html>

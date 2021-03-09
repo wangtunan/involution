@@ -9,9 +9,9 @@
 <body>
   <script>
     // promise三种状态
-    const PENDING = 'PENDING'
-    const RESOLVED = 'RESOLVED'
-    const REJECTED = 'REJECTED'
+    const PENDING = 'pending'
+    const RESOLVED = 'fulfilled'
+    const REJECTED = 'rejected'
 
     // 工具函数
     function isFunction (func) {
@@ -21,11 +21,125 @@
       return typeof obj === 'object' && obj !== null
     }
     function nextTick (fn) {
-      setTimeout(fn, 0)
+      if (typeof MutationObserver !== 'undefined') {
+        const observer = new MutationObserver(fn)
+        let counter = 1
+        const textNode = document.createTextNode(String(counter))
+        observer.observe(textNode, {
+          characterData: true
+        })
+        counter = (counter + 1) % 2
+        textNode.data = counter
+      } else {
+        setTimeout(fn, 0)
+      }
+    }
+    function resolvePromise (promise2, x, resolve, reject) {
+      // 防止递归调用
+      if (promise2 === x) {
+        return reject(new TypeError('Error 循环引用'))
+      }
+      let called = false
+      // 普通值
+      if (!isObject(x) && !isFunction(x)) {
+        resolve(x)
+        return
+      }
+      // promise实例或函数
+      try {
+        const then = x.then
+        if (isFunction(then)) {
+          then.call(
+            x,
+            value => {
+              if (called) {
+                return
+              }
+              called = true
+              resolvePromise(promise2, value, resolve, reject)
+            },
+            error => {
+              if (called) {
+                return
+              }
+              called = true
+              reject(error)
+            }
+          )
+        } else {
+          if (called) {
+            return
+          }
+          called = true
+          resolve(x)
+        }
+      } catch (error) {
+        if (called) {
+          return
+        }
+        called = true
+        reject(error)
+      }
     }
 
     // Promise类
     class MyPromise {
+      static resolve(value) {
+        // 如果value已经是一个promise实例，不用包裹，直接返回
+        if (value instanceof MyPromise) {
+          return value
+        }
+
+        return new MyPromise((resolve, reject) => {
+          // 是一个thenable对象，则调用其then方法，不是则包裹
+          if (isObject(value) && isFunction(value.then)) {
+            value.then(resolve)
+          } else {
+            resolve(value)
+          }
+        })
+      }
+      static reject (error) {
+        return new MyPromise((resolve, reject) => {
+          reject(error)
+        })
+      }
+      static all (promiseArr) {
+        return new MyPromise((resolve, reject) => {
+          const result = []
+          // 如果是空数组，直接返回
+          if (!promiseArr || promiseArr.length === 0) {
+            resolve(result)
+            return
+          }
+          for (let index = 0, len = promiseArr.length; index < len; index++) {
+            promiseArr[index].then(
+              value => {
+                result.push(value)
+                if (result.length === len) {
+                  resolve(result)
+                }
+              },
+              error => reject(error)
+            )
+          }
+        })
+      }
+      static race (promiseArr) {
+        return new MyPromise((resolve, reject) => {
+          // 如果没有传递或者空数组，直接resolve
+          if (!promiseArr || promiseArr.length === 0) {
+            resolve()
+            return
+          }
+          for (let index = 0, len = promiseArr.length; index < len; index++) {
+            promiseArr[index].then(
+              value => resolve(value),
+              error => reject(error)
+            )
+          }
+        })
+      }
       constructor (executor) {
         this.status = PENDING
         this.value = undefined
@@ -38,7 +152,7 @@
         // 表决函数
         const resolve = (value) => {
           // 上一次表决返回的value可以是一个promise实例
-          if (value instanceof Promise) {
+          if (value instanceof MyPromise) {
             return value.then(resolve, reject)
           }
           // resolve和reject确保一定要在下一个tick内
@@ -81,7 +195,7 @@
         // 为了支持promise链式回调，需要在then中手动再包裹一层promise
         // 在第一个then方法的成功回调中执行第二个promise的resolve
         // 在第一个then方法的拒绝回调中执行第二个promise的reject
-        return new Promise((resolve, reject) => {
+        return new MyPromise((resolve, reject) => {
           if (this.status === PENDING) {
             this.resolvedCallbacks.push(() => {
               try {
@@ -116,16 +230,24 @@
         })
       }
       catch (cb) {
+        // catch是一种特殊的then
         return this.then(null, cb)
       }
+      finally (cb) {
+        // 1.不管是then还是catch，都需要走finally回调
+        // 2.finally之后还可以继续then
+        return this.then(
+          value => MyPromise.resolve(cb()).then(() => value),
+          error => MyPromise.resolve(cb()).then(() => { throw error })
+        )
+      }
     }
-    const promise = new MyPromise((resolve, reject) => {
-      reject('reject')
+    MyPromise.resolve().then(() => {
+      console.log(0);
+      return MyPromise.resolve(4);
+    }).then((res) => {
+      console.log(res)
     })
-    promise.catch(error => {
-      console.log(error)
-    })
-    console.log(2)
   </script>
 </body>
 </html>

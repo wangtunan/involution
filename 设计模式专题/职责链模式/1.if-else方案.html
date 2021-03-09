@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>if-else方案</title>
+</head>
+<body>
+  <script>
+    // 职责链模式：使多个对象都有机会处理请求，从而避免请求的发送者与接受者之间的耦合关系，将这些对象连成一条链传递该请求，直到有一个对象处理它为止。
+    // 优点：解耦发送者和N个接受者之间的关系，可以手动设置起始节点，并不是必须从第一个开始，可以与其他设计模式在一起实现更加复杂的功能
+    // 缺点：请求不能保证一定能在接受者中被处理，请求链过长的情况下，可能某些节点并没有起到实质性的作用，造成性能损耗。
+
+    // 案例：某公司电商网站，准备做一个活动，用户分别交纳500元定金，可得100元优惠券；
+    // 交纳200元定金，可得50元优惠券；
+    // 不交纳定金，正常购买，不享受优惠券，切在库存不充足时，不一定保证能买到商品。
+
+    const order = function (type, pay, stock) {
+      if (type === 1) {
+        if (pay) {
+          console.log('500元定金预购，享受100元优惠券')
+        } else {
+          // 未支付定金，降级到普通订单
+          if(stock > 0) {
+            console.log('普通订单，无优惠券')
+          } else {
+            console.log('库存不足')
+          }
+        }
+      } else if (type === 2) {
+        if (pay) {
+          console.log('200元定金预购，享受50元优惠券')
+        } else {
+          // 未支付定金，降级到普通订单
+          if(stock > 0) {
+            console.log('普通订单，无优惠券')
+          } else {
+            console.log('库存不足')
+          }
+        }
+      } else {
+        if(stock > 0) {
+          console.log('普通订单，无优惠券');
+        } else {
+          console.log('库存不足');
+        }
+      }
+    }
+
+    // 订单测试
+    order(1, true, 500);  // 输出：500元定金预购，享受100元优惠券
+    order(1, false,500);  // 输出：普通订单，无优惠券
+    order(2, true, 500);  // 输出：200元定金预购，享受50元优惠券
+    order(3, true, 500);  // 输出：普通订单，无优惠券
+  </script>
+</body>
+</html>
