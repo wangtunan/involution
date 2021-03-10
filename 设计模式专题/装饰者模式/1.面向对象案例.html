@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>面向对象装饰者模式案例</title>
+</head>
+<body>
+  <script>
+    // 装饰者模式：它可以动态的给某个对象添加一些额外的职责，而不会影响从这个类中派生的其它对象。
+    function Plane () {}
+    function Missle (plane) {
+      this.plane = plane
+    }
+    Plane.prototype.fire = function () {
+      console.log('发射普通子弹')
+    }
+    Missle.prototype.fire = function () {
+      console.log('发射导弹')
+    }
+
+    let plane = new Plane()
+    plane.fire()  // 发射普通子弹
+
+    // 装饰飞机对象：升级子弹
+    plane = new Missle(plane)
+    plane.fire() // 发射导弹
+  </script>
+</body>
+</html>

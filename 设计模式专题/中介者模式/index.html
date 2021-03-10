@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>中介者模式</title>
+</head>
+<body>
+  <script>
+    // 中介者模式：中介者模式的作用就是解除对象之间的耦合关系，增加一个中介者对象后，
+    // 所有的相关对象都通过中介者对象来通信，而不是互相引用，所以当对象发生改变时，只需要通知中介者即可。
+
+    // 缺点：
+    // 1.中介者模式本身就要新增一个中介者对象.
+    // 2.将对象与对象之间交互的复杂性，转移到对象与中介者之间的复杂性，使得中介者对象经常是巨大的.
+    // 3.中介者本身就是一个难以维护的对象.
+
+    // 中介者
+    const playerDirector = (function(){
+      const playerList = {}
+      return {
+        addPlayer: function (player) {
+          const { team, name } = player
+          if (!playerList[team]) {
+            playerList[team] = []
+          }
+          playerList[team].push(player)
+          console.log(`${name}加入了${team}队`)
+        },
+        removePlayer: function (player) {
+          const { team, name } = player
+          if (!playerList[team]) {
+            return
+          }
+          const teamPlayers = playerList[team]
+          for (let index = 0; index < teamPlayers.length; index++) {
+            const currPlayer = teamPlayers[index]
+            if (currPlayer.name === name) {
+              teamPlayers.splice(index, 1)
+              console.log(`${name}离开了${team}队`)
+              break
+            }
+          }
+        }
+      }
+    })()
+
+    // 玩家
+    function Player (name, team) {
+      this.name = name
+      this.team = team
+    }
+    Player.prototype.remove = function () {
+      playerDirector.removePlayer(this)
+    }
+    const playerFactory = function (name, team) {
+      const player = new Player(name, team)
+      playerDirector.addPlayer(player)
+      return player
+    }
+
+    // 初始化创建玩家
+    const player1 = playerFactory('张三', 'red')
+    const player2 = playerFactory('李四', 'red')
+    const player3 = playerFactory('王五', 'blue')
+    const player4 = playerFactory('赵六', 'blue')
+
+    // 移除玩家
+    setTimeout(() => {
+      player2.remove()
+      player4.remove()
+    }, 2000)
+  </script>
+</body>
+</html>
