@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>手写数组push方法</title>
+</head>
+<body>
+  <script>
+    Array.prototype.myPush = function (...args) {
+      const array = Object(this)
+      const len = array.length >>> 0
+      const argsLen = args.length >>> 0
+      const newLen = len + argsLen
+      // 长度检验
+      if (newLen > Math.pow(2, 53) - 1) {
+        throw new TypeError('The number of array is over the max value')
+      }
+      for (let i = 0; i < argsLen; i++) {
+        array[len + i] = args[i]
+      }
+      return array.length = newLen
+    }
+    const arr1 = [1, 2, 3, 4]
+    const arr2 = [1, 2, 3, 4]
+    console.log(arr1.myPush(5, 6, 7), arr1)
+    console.log(arr2.push(5, 6, 7), arr2)
+  </script>
+</body>
+</html>

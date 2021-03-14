@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>手写JSON.stringify方法</title>
+</head>
+<body>
+  <script>
+    // 参数：JSON.stringify(obj, replacer?, space?)
+    // 备注：第二个，第三个参数不实现
+    // 序列规则：
+    // 一、基础数据类型：
+    // 1. undefined => undefined
+    // 2. boolean => 'false'/'true'
+    // 3. number => 字符串类型数字
+    // 4. symbol => undefined
+    // 5. null => 'null'
+    // 6. string => string
+    // 7. NaN和Infinity => 'null'
+    // 二、引用类型：
+    // 1. function => undefined
+    // 2. Array数组中 => string / 'null'
+    // 3. RegExp => '{}'
+    // 4. Date => toJSON结果
+    // 5. 普通Object => a.有toJSON方法，调用返回 
+    //                 b.属性值为undefiend、function、symbol值全部忽略这个key
+    //                 c.属性键为symbol全部忽略
+    //                 d.循环引用对象，报错
+
+    function jsonStringify(data) {
+      const ignoreTypes = ['function', 'symbol', 'undefined']
+      const dataType = typeof data
+      let result
+      if (dataType !== 'object') {
+        result = data
+        if (Number.isNaN(result) || result === Infinity) {
+          result = 'null'
+        } else if (ignoreTypes.indexOf(dataType) !== -1) {
+          return undefined
+        } else if (dataType === 'string') {
+          result = `"${result}"`
+        }
+        return String(result)
+      } else if (Array.isArray(data)) {
+        result = []
+        data.forEach((item, index) => {
+          const itemType = typeof item
+          if (ignoreTypes.indexOf(itemType) !== -1) {
+            result[index] = 'null'
+          } else {
+            result[index] = jsonStringify(item)
+          }
+        })
+        result = `[${result}]`
+        return result.replace(/'/g, '"')
+      } else {
+        if (data === null) {
+          return 'null'
+        } else if (data.toJSON && typeof data.toJSON === 'function') {
+          return jsonStringify(data.toJSON())
+        } else {
+          result = []
+          Object.keys(data).forEach((key, index) => {
+            const val = data[key]
+            const valType = typeof val
+            if (typeof key !== 'symbol' && val !== undefined && ignoreTypes.every(type => valType != type )) {
+              result.push(`"${key}":${jsonStringify(val)}`)
+            }
+          })
+          result = `{${result}}`.replace(/'/g, '"')
+          return result
+        }
+      }
+    }
+
+    // test
+    let nl = null;
+    console.log(jsonStringify(nl) === JSON.stringify(nl));
+    // true
+    let und = undefined;
+    console.log(jsonStringify(undefined) === JSON.stringify(undefined));
+    // true
+    let boo = false;
+    console.log(jsonStringify(boo) === JSON.stringify(boo));
+    // true
+    let nan = NaN;
+    console.log(jsonStringify(nan) === JSON.stringify(nan));
+    // true
+    let inf = Infinity;
+    console.log(jsonStringify(Infinity) === JSON.stringify(Infinity));
+    // true
+    let str = "jack";
+    console.log(jsonStringify(str) === JSON.stringify(str));
+    // true
+    let reg = new RegExp("\w");
+    console.log(jsonStringify(reg) === JSON.stringify(reg));
+    // true
+    let date = new Date();
+    console.log(jsonStringify(date) === JSON.stringify(date));
+    // true
+    let sym = Symbol(1);
+    console.log(jsonStringify(sym) === JSON.stringify(sym));
+    // true
+    let array = [1,2,3];
+    console.log(jsonStringify(array) === JSON.stringify(array));
+    // true
+    let obj = {
+        name: 'jack',
+        age: 18,
+        attr: ['coding', 123, undefined, Symbol('123'), function () {}],
+        date: new Date(),
+        reg: new RegExp(),
+        uni: Symbol(2),
+        sayHi: function() {
+            console.log("hi")
+        },
+        info: {
+            sister: 'lily',
+            age: 16,
+            intro: {
+                money: undefined,
+                job: null
+            }
+        }
+    }
+    console.log(jsonStringify(obj) === JSON.stringify(obj));
+    // true
+  </script>
+</body>
+</html>
