@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>generator方案</title>
+</head>
+<body>
+  <script>
+    // 题目：创建一个createFlow方法，这个方法接受一个二维数组函数，其中函数可以是同步，也可以是异步，甚至可以是subFlow，要求按照数组顺序输出结果
+    // 案例：依次输出1 2 3 4 5 6
+    const delay = (timer) => new Promise(resolve => setTimeout(resolve, timer))
+    createFlow([
+      () => console.log(1),
+      () => delay().then(() => console.log(2)),
+      [
+        () => console.log(3),
+        () => delay().then(() => console.log(4))
+      ],
+      createFlow([
+        () => console.log(5),
+        () => delay().then(() => console.log(6))
+      ])
+    ]).run(() => {
+      console.log(7)
+    })
+
+    function createFlow (arr = []) {
+      const requestList = arr.slice().flat()
+      function * createIterator () {
+        for (let index = 0; index < requestList.length; index++) {
+          yield requestList[index]
+        }
+      }
+      let isFinished = false
+      const it = createIterator()
+      function run (callback) {
+        const itResult = it.next()
+        const task = itResult.value
+        isFinished = itResult.done
+        if (isFinished) {
+          callback && callback()
+          return
+        }
+        
+        if (typeof task == 'function') {
+          const res = task()
+          if (res instanceof Promise) {
+            res.then(() => run(callback))
+          } else {
+            run(callback)
+          }
+        } else if (task && task.isFlow) {
+          task.run(() => run(callback))
+        }
+      }
+      return {
+        run,
+        isFlow: true
+      }
+    }
+  </script>
+</body>
+</html>
