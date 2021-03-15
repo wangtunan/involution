@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>请求重试方法</title>
+</head>
+<body>
+  <script>
+    // 题目：设计一个方法，当传递的请求失败时，可以重试指定的次数
+
+    function login () {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          reject()
+        }, 1000)
+      })
+    }
+    function retryRequest (request, count) {
+      let retryCount = 0
+      return new Promise((resolve, reject) => {
+        const reteyFunc = () => {
+          request().then(res => {
+            resolve(res)
+          }).catch(() => {
+            if (retryCount < count) {
+              retryCount++
+              console.log(`重试次数:${retryCount}`)
+              reteyFunc()
+            } else {
+              retryCount = 0
+              reject()
+            }
+          })
+        }
+        reteyFunc()
+      })
+    }
+    retryRequest(login, 5)
+  </script>
+</body>
+</html>
