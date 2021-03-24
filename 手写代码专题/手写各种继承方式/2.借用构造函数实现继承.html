@@ -8,6 +8,12 @@
 </head>
 <body>
   <script>
+    // 2. 借用构造函数实现继承
+    // 优点：
+    // 1、父类引用类型实例不会被共享
+    // 2、可以向父类构造函数传递参数
+    // 缺点：
+    // 1、无法继承父类原型上的属性和方法
     function Animal (name) {
       this.name = name
       this.colors = ['red']
