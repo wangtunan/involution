@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>斐波那契数列</title>
+</head>
+<body>
+  <script>
+    // leetcode: https://leetcode-cn.com/problems/fibonacci-number
+    // way1: 尾递归优化
+    function fib1 (n, last = 0, total = 1) {
+      if (n===0) return 0
+      if (n===1) return total
+      return fib1(n - 1, total, total + last)
+    }
+    console.log(fib1(0))
+    console.log(fib1(1))
+    console.log(fib1(2))
+    console.log(fib1(3))
+    console.log(fib1(4))
+    console.log(fib1(5))
+    console.log(fib1(6))
+
+    // way2: 递归 + 缓存
+    const cache = {}
+    function fib2 (n) {
+      if (n===0) return 0
+      if (n===1) return 1
+      if (cache[n]) return cache[n]
+      cache[n] = fib2(n - 1) + fib2(n - 2)
+      return cache[n]
+    }
+    console.log(fib2(0))
+    console.log(fib2(1))
+    console.log(fib2(2))
+    console.log(fib2(3))
+    console.log(fib2(4))
+    console.log(fib2(5))
+    console.log(fib2(6))
+
+
+    // way3: 循环
+    function fib3 (n) {
+      if (n < 2) return n;
+      let array = []
+      array[0] = 0
+      array[1] = 1
+      for (let index = 2; index <= n; index++) {
+        array[index] = array[index - 1] + array[index - 2]
+      }
+      return array[n]
+    }
+    console.log(fib3(0))
+    console.log(fib3(1))
+    console.log(fib3(2))
+    console.log(fib3(3))
+    console.log(fib3(4))
+    console.log(fib3(5))
+    console.log(fib3(6))
+  </script>
+</body>
+</html>
