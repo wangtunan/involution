@@ -31,6 +31,7 @@
         }, 1000 * Math.random())
       })
     }
+    // way1: Promise写法
     function mutilRequest (urls, max = 1) {
       let requestedCount = 0
       let requestIndex = 0
@@ -59,8 +60,46 @@
         }
       })
     }
-
-    mutilRequest(urls, 3).then(res => {
+    // mutilRequest(urls, 3).then(res => {
+    //   console.log(res)
+    // })
+    
+    // way2: Promise + Reduce方法
+    function requestByLimit (urls, request, limit) {
+      if (urls.length < limit) {
+        return Promise.all(urls.map(url => request(url)))
+      }
+      const run = () => {
+        return new Promise(resolve => {
+          const copyArr = urls.slice()
+          let res = []
+          const promiseArray = copyArr.splice(0, 3).map(url => {
+            return {
+              id: url,
+              fn: request(url)
+            }
+          })
+          const restChain = copyArr.reduce((promiseChain, url) => {
+            return promiseChain.then(() => Promise.race(promiseArray.map(item => item.fn)))
+                               .then((resolveUrl) => {
+                                 console.log('success: ' + resolveUrl)
+                                 res.push(resolveUrl)
+                                 const findIndex = promiseArray.findIndex(item => item.id === resolveUrl)
+                                 promiseArray.splice(findIndex, 1)
+                                 promiseArray.push({
+                                   id: url,
+                                   fn: request(url)
+                                 })
+                              })
+          }, Promise.resolve())
+          // copyArr比url少limit个，当copyArr遍历完毕后，promiseArray还有limit个没有请求，使用Promise.all
+          restChain.then(() => Promise.all(promiseArray.map(item => item.fn)))
+                   .then(data => resolve(res.concat(data)))
+        })
+      }
+      return run()
+    }
+    requestByLimit(urls, runRequest, 3).then(res => {
       console.log(res)
     })
   </script>
