@@ -22,8 +22,9 @@
             startTime = endTime = now()
             callback && callback()
           }
+          return self.timer
         }
-        this.timer = requestAnimationFrame(loop)
+        this.timer = loop()
         return this.timer
       },
       clearInterval: function () {
@@ -37,7 +38,7 @@
       if (count >= 3) {
         obj.clearInterval()
       } 
-    }, 500)
+    }, 1000)
   </script>
 </body>
 </html>

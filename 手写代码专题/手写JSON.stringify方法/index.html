@@ -60,9 +60,11 @@
           return 'null'
         } else if (data.toJSON && typeof data.toJSON === 'function') {
           return jsonStringify(data.toJSON())
+        } else if (data instanceof RegExp) {
+          return '{}'
         } else {
           result = []
-          Object.keys(data).forEach((key, index) => {
+          Reflect.ownKeys(data).forEach((key, index) => {
             const val = data[key]
             const valType = typeof val
             if (typeof key !== 'symbol' && val !== undefined && ignoreTypes.every(type => valType != type )) {

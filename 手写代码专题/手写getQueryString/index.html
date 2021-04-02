@@ -8,29 +8,38 @@
 </head>
 <body>
   <script>
-    function getQueryString (url, name) {
+    // 1.不传，返回所有
+    // 2.传递，获取指定参数(多个相同参数处理成数组)
+    let dom
+    function getQueryString (url, name = '') {
       if (!url) {
         return undefined
       }
-      const index = url.indexOf('?')
-      if (index === -1) {
-        return undefined
+      if (!dom) {
+        dom = document.createElement('a')
       }
-      const arr = url.substring(index + 1).split('&')
-      let result = ''
-      for (let index = 0; index < arr.length; index++) {
-        const [key, value] = arr[index].split('=')
-        if (key === name) {
-          result = decodeURIComponent(value)
-          break
+      dom.href = url
+      const search = dom.search.substring(1)
+      const splitArr = search.split('&')
+      const result = {}
+      for (let index = 0; index < splitArr.length; index++) {
+        const [key, value] = splitArr[index].split('=')
+        if (key in result) {
+          result[key] = [result[key], decodeURIComponent(value)]
+        } else {
+          result[key] = decodeURIComponent(value)
         }
       }
-      return result
+      return name ? result[name] : result
     }
-    const url = 'https://www.baidu.com/s?id=123&name=why&phone=13876769797'
-    console.log(getQueryString(url, 'id'))
-    console.log(getQueryString(url, 'name'))
-    console.log(getQueryString(url, 'phone'))
+    const url1 = 'https://www.baidu.com/?id=100&name=AA&age=23&address=中国'
+    const url2 = 'https://www.baidu.com/?id=100&name=AA&age=23&id=101'
+    console.log(getQueryString(url1))
+    console.log(getQueryString(url1, 'id'))
+    console.log(getQueryString(url1, 'address'))
+
+    console.log(getQueryString(url2))
+    console.log(getQueryString(url2, 'id'))
   </script>
 </body>
 </html>
