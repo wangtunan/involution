@@ -67,6 +67,7 @@
           self.off(event, on)
           callback.apply(self, arguments)
         }
+        on.fn = callback
         this.on(event, on)
       },
       emit: function (event) {
