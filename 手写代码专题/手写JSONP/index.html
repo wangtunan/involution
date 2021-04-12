@@ -27,7 +27,7 @@
       }
       return Object.keys(data).map((key, index) => {
         return `${index ? '&' : ''}${key}=${data[key]}`
-      })
+      }).join('')
     }
     const params = {
       name: 'AAA',

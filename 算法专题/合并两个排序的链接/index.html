@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>合并两个排序的链表</title>
+</head>
+<body>
+  <script>
+    // leetcode: https://leetcode-cn.com/problems/he-bing-liang-ge-pai-xu-de-lian-biao-lcof/
+
+    function mergeTwoLists (l1, l2) {
+      if (!l1 || !l2) {
+        return l1 || l2
+      }
+      if (l1.val < l2.val) {
+        l1.next = mergeTwoLists(l1.next, l2)
+        return l1
+      } else {
+        l2.next = mergeTwoLists(l1, l2.next)
+        return l2
+      }
+    }
+  </script>
+</body>
+</html>

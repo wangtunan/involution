@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LRU缓存机制</title>
+</head>
+<body>
+  <script>
+    // leetcode: https://leetcode-cn.com/problems/lru-cache/
+    function LRUCache (capacity) {
+      this.capacity = capacity
+      this.keys = new Set()
+      this.cache = Object.create(null)
+    }
+    LRUCache.prototype.get = function (key) {
+      if (this.keys.has(key)) {
+        this.keys.delete(key)
+        this.keys.add(key)
+        return this.cache[key]
+      }
+      return -1
+    }
+    LRUCache.prototype.put = function (key, value) {
+      if (this.keys.has(key)) {
+        this.keys.delete(key)
+        this.cache[key] = value
+        this.keys.add(key)
+      } else {
+        this.keys.add(key)
+        this.cache[key] = value
+        if (this.capacity && this.keys.size > this.capacity) {
+          const deleteKey = Array.from(this.keys)[0]
+          delete this.cache[deleteKey]
+          this.keys.delete(deleteKey)
+        }
+      }
+      return null
+    }
+
+    const lruCache = new LRUCache(2);
+    console.log(lruCache.put(1, 1)); // 缓存是 {1=1}
+    console.log(lruCache.put(2, 2)); // 缓存是 {1=1, 2=2}
+    console.log(lruCache.get(1));    // 返回 1
+    console.log(lruCache.put(3, 3)); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
+    console.log(lruCache.get(2));    // 返回 -1 (未找到)
+    console.log(lruCache.put(4, 4)); // 该操作会使得关键字 1 作废，缓存是 {4=4, 3=3}
+    console.log(lruCache.get(1));    // 返回 -1 (未找到)
+    console.log(lruCache.get(3));    // 返回 3
+    console.log(lruCache.get(4));    // 返回 4
+  </script>
+</body>
+</html>

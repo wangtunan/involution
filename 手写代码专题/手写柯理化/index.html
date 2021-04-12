@@ -23,10 +23,7 @@
       return args.reduce((a, b) => a + b, 0)
     }
     const addCurrying = currying(add)
-    addCurrying(1)
-    addCurrying(2)
-    addCurrying(3)
-    addCurrying(4)
+    addCurrying(1)(2)(3)(4)
     console.log(addCurrying())
   </script>
 </body>

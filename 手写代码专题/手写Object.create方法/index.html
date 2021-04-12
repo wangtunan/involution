@@ -20,7 +20,7 @@
       F.prototype = obj
       const ret = new F()
       // 兼容第二个参数
-      if (properties !== null && properties !== undefined) {
+      if (properties) {
         Object.defineProperties(ret, properties)
       }
       // 兼容第一个参数为null

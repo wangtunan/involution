@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>有效数独</title>
+</head>
+<body>
+  <script>
+    // leetcode: 
+
+    function isValidSudoku (board) {
+      const rows = {}
+      const columns = {}
+      const boxs = {}
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          const num = board[i][j]
+          if (num === '.') {
+            continue
+          }
+          const boxIndex = parseInt(i / 3) * 3 + parseInt(j / 3)
+          const iKey = i + '-' + num
+          const jKey = j + '-' + num
+          const bKey = boxIndex + '-' + num
+          if (rows[iKey] || columns[jKey] || boxs[bKey]) {
+            return false
+          }
+          rows[iKey] = true
+          columns[jKey] = true
+          boxs[bKey] = true
+        }
+      }
+      return true
+    }
+    const board1 = [
+      ["5","3",".",".","7",".",".",".","."],
+      ["6",".",".","1","9","5",".",".","."],
+      [".","9","8",".",".",".",".","6","."],
+      ["8",".",".",".","6",".",".",".","3"],
+      ["4",".",".","8",".","3",".",".","1"],
+      ["7",".",".",".","2",".",".",".","6"],
+      [".","6",".",".",".",".","2","8","."],
+      [".",".",".","4","1","9",".",".","5"],
+      [".",".",".",".","8",".",".","7","9"]
+    ]
+    const board2 = [
+      ["8","3",".",".","7",".",".",".","."],
+      ["6",".",".","1","9","5",".",".","."],
+      [".","9","8",".",".",".",".","6","."],
+      ["8",".",".",".","6",".",".",".","3"],
+      ["4",".",".","8",".","3",".",".","1"],
+      ["7",".",".",".","2",".",".",".","6"],
+      [".","6",".",".",".",".","2","8","."],
+      [".",".",".","4","1","9",".",".","5"],
+      [".",".",".",".","8",".",".","7","9"]
+    ]
+    console.log(isValidSudoku(board1)) // true
+    console.log(isValidSudoku(board2)) // true
+  </script>
+</body>
+</html>

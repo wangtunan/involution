@@ -10,7 +10,7 @@
   <script>
     // 深拷贝：兼容Date，RegExp, 循环引用对象，属性修饰符
     function isObject (obj) {
-      return (typeof obj === 'object') && obj !== null
+      return typeof obj === 'object' && obj !== null
     }
     function isFunction (obj) {
       return typeof obj === 'function'

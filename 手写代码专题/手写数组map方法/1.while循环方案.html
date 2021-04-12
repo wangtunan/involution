@@ -17,7 +17,7 @@
         throw new TypeError(`${callback} is not a function`)
       }
       let arr = Object(this)
-      let thisArg = arguments.length > 1 ? arguments[1] : undefined
+      context = context || window
       const len = arr.length >>> 0
       let result = new Array(len)
       let index = 0
@@ -25,7 +25,7 @@
         let value, mapValue
         if (index in arr) {
           value = arr[index]
-          mapValue = callback.call(this.thisArg, value, index, arr)
+          mapValue = callback.call(context, value, index, arr)
           result[index] = mapValue
         }
         index++
