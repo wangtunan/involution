@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>插入排序</title>
+</head>
+<body>
+  <script>
+    // 插入排序：默认第一项已经排好序，每次排一个数组项，以此方式构建最后的排序数组。
+    // 复杂度：O(n²)
+    function insertSort (array) {
+      const len = array.length
+      if (len < 2) return array
+      for(let i = 1; i < len; i++) {
+        let j = i
+        let flag = array[i]
+        while(j > 0 && array[j-1] > flag) {
+          array[j] = array[j-1] 
+          j--
+        }
+        array[j] = flag
+      }
+      return array
+    }
+    console.log(insertSort([2, 1]))
+    console.log(insertSort([1, 3, 4, 2]))
+    console.log(insertSort([3, 6, 8, 1]))
+  </script>
+</body>
+</html>

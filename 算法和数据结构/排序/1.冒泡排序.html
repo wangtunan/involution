@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>冒泡排序</title>
+</head>
+<body>
+  <script>
+    // 冒泡排序：比较相邻的两个数，大的放置在右边。
+    // 复杂度：O(n²)
+    // leetCode关联题: 第K个最大数(215题)，最大间距(164题)
+    function bubbleSort (array) {
+      const len = array.length
+      if (len < 2) return array
+      for(let i = len - 1; i > 0; i--) {
+        for (let j = 0; j < i; j++) {
+          if (array[j] > array[j+1]) {
+            const temp = array[j+1]
+            array[j+1] = array[j]
+            array[j] = temp
+          }
+        }
+      }
+      return array
+    }
+    console.log(bubbleSort([2, 1]))
+    console.log(bubbleSort([1, 3, 4, 2]))
+    console.log(bubbleSort([3, 6, 8, 1]))
+  </script>
+</body>
+</html>

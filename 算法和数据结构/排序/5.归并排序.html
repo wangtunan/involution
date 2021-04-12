@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>归并排序</title>
+</head>
+<body>
+  <script>
+    // 归并排序：把一个大数组分割成两个更小的数组，递归这个过程。
+    // 复杂度：O(logn)
+    function mergeSort (array) {
+      const len = array.length
+      if (len < 2) return array
+      const middle = Math.floor(len/2)
+      const left = mergeSort(array.slice(0, middle))
+      const right = mergeSort(array.slice(middle))
+      const merge = (left, right) => {
+        let i = 0;
+        let j = 0;
+        const res = []
+        while (i < left.length && j < right.length) {
+          const val = left[i] < right[j] ? left[i++] : right[j++]
+          res.push(val)
+        }
+        const rest = i < left.length ? left.slice(i) : right.slice(j)
+        return res.concat(rest)
+      }
+      array = merge(left, right)
+      return array
+    }
+    console.log(mergeSort([2, 1]))
+    console.log(mergeSort([1, 3, 4, 2]))
+    console.log(mergeSort([3, 6, 8, 1]))
+  </script>
+</body>
+</html>

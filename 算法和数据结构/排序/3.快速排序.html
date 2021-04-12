@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>快速排序</title>
+</head>
+<body>
+  <script>
+    // 复杂度：O(nlogn)
+    // way1基本实现: 选择一个基准点，遍历数组比它小的放左边，比它大的放右边，递归。
+    function quickSort1 (array) {
+      const sort = (arr) => {
+        const len = arr.length
+        if (len < 2) return arr
+        const flag = arr[0]
+        const left = []
+        const right = []
+        for(let i = 1; i < len; i++) {
+          const val = arr[i]
+          if (flag < val) {
+            right.push(val)
+          } else {
+            left.push(val)
+          }
+        }
+        return sort(left).concat(flag, sort(right))
+      }
+      return sort(array)
+    }
+    console.log(quickSort1([2, 1]))
+    console.log(quickSort1([1, 3, 4, 2]))
+    console.log(quickSort1([3, 6, 8, 1]))
+
+    // way2 划分区域：选择一个基准点，比基准点小的放其右侧，查找完毕把基准点跟index交换
+    // 此时基准点左侧是比它小的，右侧是比它大的。递归这个过程(递归左侧，递归右侧)
+    function quickSort2 (array) {
+      const swap = (arr, i, j) => {
+        const temp = arr[i]
+        arr[i] = arr[j]
+        arr[j] = temp
+      }
+      const findIndex = (arr, left, right) => {
+        let flag = arr[left]
+        let index = left + 1
+        for(let i = index; i <= right; i++) {
+          if (flag > arr[i]) {
+            swap(arr, index, i)
+            index++
+          }
+        }
+        swap(arr, left, index - 1)
+        return index
+      }
+      const sort = (arr, left, right) => {
+        if (left < right) {
+          const index = findIndex(arr, left, right)
+          sort(arr, left, index - 1)
+          sort(arr, index, right)
+        }
+      }
+      sort(array, 0, array.length - 1)
+      return array
+    }
+    console.log(quickSort2([2, 1]))
+    console.log(quickSort2([1, 3, 4, 2]))
+    console.log(quickSort2([3, 6, 8, 1]))
+</script>
+</body>
+</html>
