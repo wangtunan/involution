@@ -12,7 +12,7 @@
       let timer = null
       let firstTime = true
       return function () {
-        const args = arguments
+        const args = [...arguments]
         const self = this
         if (firstTime) {
           fn.apply(self, args)

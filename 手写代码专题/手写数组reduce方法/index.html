@@ -31,7 +31,7 @@
         if (index >= len) {
           throw new TypeError('Reduce of empty array with no initial value')
         }
-        value = array[index++]
+        result = array[index++]
       }
       while (index < len) {
         if (index in array) {
