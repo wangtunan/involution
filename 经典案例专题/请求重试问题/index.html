@@ -9,12 +9,13 @@
 <body>
   <script>
     // 题目：设计一个方法，当传递的请求失败时，可以重试指定的次数
-
     function login () {
       return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          reject()
-        }, 1000)
+        if (Math.random() > 0.9) {
+          resolve('login success')
+        } else {
+          reject('login error')
+        }
       })
     }
     function retryRequest (request, count) {
@@ -37,7 +38,11 @@
         reteyFunc()
       })
     }
-    retryRequest(login, 5)
+    retryRequest(login, 5).then(res => {
+      console.log(res)
+    }).catch(e => {
+      console.log(e)
+    })
   </script>
 </body>
 </html>

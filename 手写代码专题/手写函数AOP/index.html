@@ -11,7 +11,7 @@
     Function.prototype.before = function (beforeFn) {
       const self = this
       return function beforeFunc () {
-        const args = arguments
+        const args = [...arguments]
         beforeFn.apply(this, args)
         return self.apply(this, args)
       }
@@ -19,7 +19,7 @@
     Function.prototype.after = function (afterFn) {
       const self = this
       return function afterFunc () {
-        const args = arguments
+        const args = [...arguments]
         const result = self.apply(this, args)
         afterFn.apply(this, args)
         return result
