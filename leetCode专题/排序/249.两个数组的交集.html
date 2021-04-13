@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>两个数组的交集</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/intersection-of-two-arrays/
+    // leetCode: https://leetcode-cn.com/problems/intersection-of-two-arrays-ii/
+    // ↑为变异题：[1, 2, 2], [2, 2]，交集是[2, 2]
+    // way1: reduce方案时间复杂度O(n²)，空间复杂度O(n)
+    function intersection1 (nums1, nums2) {
+      return nums1.reduce((acc, cur) => {
+        if (nums2.indexOf(cur) !== -1 && acc.indexOf(cur) === -1) {
+          acc.push(cur)
+        }
+        return acc
+      }, [])
+    }
+    console.log(intersection1([1,2,2,1], [2,2])) // [2]
+    console.log(intersection1([9,4,9,8,4], [4,9,5])) // [9, 4] or [4, 9]
+
+    // way2: hash表时间复杂度O(n),空间复杂度O(n)
+    function intersection2 (nums1, nums2) {
+      function makeMap (array) {
+        const map = new Map()
+        array.forEach(val => {
+          if (map.has(val)) {
+            const counter = map.get(val)
+            map.set(val, counter + 1)
+          } else {
+            map.set(val, 1)
+          }
+        })
+        return map
+      }
+      const map1 = makeMap(nums1)
+      const map2 = makeMap(nums2)
+      const res = []
+
+      for (const key of map1.keys()) {
+        const counter1 = map1.get(key)
+        const counter2 = map2.get(key)
+        if (counter2) {
+          res.push(key)
+        }
+      }
+      return res
+    }
+    console.log(intersection2([1,2,2,1], [2,2])) // [2]
+    console.log(intersection2([9,4,9,8,4], [4,9,5])) // [9, 4] or [4, 9]
+  </script>
+</body>
+</html>

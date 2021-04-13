@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>三角形最大周长</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/largest-perimeter-triangle/
+    // 给定三条边，如果满足最大的边小于另外两边的和，就能构成三角形。
+    function largestPerimeter (nums) {
+      nums.sort((a, b) => a - b)
+      for(let i = nums.length - 1; i >= 2; i--) {
+        if (nums[i] < nums[i-1] + nums[i-2]) {
+          return nums[i] + nums[i-1] + nums[i-2]
+        }
+      }
+      return 0
+    }
+    console.log(largestPerimeter([2,1,2]))   // 5
+    console.log(largestPerimeter([1,2,1]))   // 0
+    console.log(largestPerimeter([3,2,3,4])) // 10
+    console.log(largestPerimeter([3,6,2,3])) // 8
+  </script>
+</body>
+</html>

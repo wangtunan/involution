@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>有效的字母异位词</title>
+</head>
+<body>
+  <script>
+    // 字母异位词：长度相同，字符相同，但字符顺序不同。
+    // leetCode: https://leetcode-cn.com/problems/valid-anagram/
+    function isAnagram (s, t) {
+      if(s.length !== t.length) return false
+      const map = Object.create(null)
+      for (let i = 0, len = s.split('').length; i < len; i++) {
+        const sChar = s[i]
+        const tChar = t[i]
+        map[sChar] = (map[sChar] || 0) + 1
+        map[tChar] = (map[tChar] || 0) - 1
+      }
+      return Object.keys(map).every((key) => map[key] <= 0)
+    }
+    console.log(isAnagram('anagram', 'nagaram')) // true
+    console.log(isAnagram('cat', 'car')) // false
+    console.log(isAnagram('a', 'b')) // false
+  </script>
+</body>
+</html>
