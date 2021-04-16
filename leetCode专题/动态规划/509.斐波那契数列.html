@@ -8,7 +8,8 @@
 </head>
 <body>
   <script>
-    // leetcode: https://leetcode-cn.com/problems/fibonacci-number
+    // leetCode: https://leetcode-cn.com/problems/fibonacci-number/
+    // 相关题：爬楼梯 https://leetcode-cn.com/problems/climbing-stairs/
     // way1: 尾递归优化
     function fib1 (n, last = 0, total = 1) {
       if (n===0) return 0
@@ -41,7 +42,7 @@
     console.log(fib2(6))
 
 
-    // way3: 循环
+    // way3: 循环(动态规划思想)
     function fib3 (n) {
       if (n < 2) return n;
       let array = []
