@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>双端队列</title>
+</head>
+<body>
+  <script src="./deque.js"></script>
+  <script>
+    const deque = new Deque()
+    console.log(deque.isEmpty())
+    deque.addBack('AAA')
+    deque.addBack('BBB')
+    console.log(deque.toString())
+    deque.addBack('CCC')
+    console.log(deque.toString())
+    console.log(deque.size())
+    console.log(deque.isEmpty())
+    deque.removeFront()
+    console.log(deque.toString())
+    deque.removeBack()
+    console.log(deque.toString())
+    deque.addFront('DDD')
+    console.log(deque.toString())
+  </script>
+</body>
+</html>

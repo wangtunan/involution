@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>计数二进制子串</title>
+</head>
+<body>
+  <script>
+    // leetCode：https://leetcode-cn.com/problems/count-binary-substrings/
+    function countBinaryStr (str) {
+      const counters = []
+      const len = str.length
+      let index = 0
+      let result = 0
+      // 00110011 => [2, 2, 2, 2]
+      while(index < len) {
+        let c = str[index]
+        let counter = 0
+        while (index < len && c === str[index]) {
+          counter++
+          index++
+        }
+        counters.push(counter)
+      }
+      // [2, 2, 2, 2] => 6
+      for (let i = 1, len; i < counters.length; i++) {
+        result += Math.min(counters[i], counters[i-1])
+      }
+      return result
+    }
+    console.log(countBinaryStr('00110011')) // 6
+    console.log(countBinaryStr('10101'))    // 4
+  </script>
+</body>
+</html>

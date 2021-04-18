@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>电话号码组合</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/letter-combinations-of-a-phone-number/
+    // function letterCombinations (digits) {
+    //   const map = {
+    //     2: 'abc',
+    //     3: 'def',
+    //     4: 'ghi',
+    //     5: 'jkl',
+    //     6: 'mno',
+    //     7: 'pqrs',
+    //     8: 'tuv',
+    //     9: 'wxyz'
+    //   }
+    //   const result = []
+    //   const codes = []
+    //   digits.split('').forEach(item => {
+    //     if (map[item]) {
+    //       codes.push(map[item])
+    //     }
+    //   })
+    //   const combine = (arr) => {
+    //     if (arr.length === 1) {
+    //       return arr[0].split('')
+    //     }
+    //     const temp = []
+    //     for (let i = 0; i < arr[0].length; i++) {
+    //       for (let j = 0; j < arr[1].length; j++) {
+    //         temp.push(`${arr[0][i]}${arr[1][j]}`)
+    //       }
+    //     }
+    //     arr.splice(0, 2, temp)
+    //     if (arr.length > 1) {
+    //       combine(arr)
+    //     } else {
+    //       return temp
+    //     }
+    //     return arr[0]
+    //   }
+
+    //   return combine(codes)
+    // }
+    const letterCombinations = (digits) => {
+      const len = digits.length
+      if (!len) {
+        return []
+      }
+      const res = []
+      const map = {
+        2: 'abc',
+        3: 'def',
+        4: 'ghi',
+        5: 'jkl',
+        6: 'mno',
+        7: 'pqrs',
+        8: 'tuv',
+        9: 'wxyz'
+      }
+      const dfs = (curStr, i) => {
+        if (i > len - 1) {
+          res.push(curStr)
+          return
+        }
+        // abc => a b c
+        // a + (...def) ad ae af
+        // b + (...def) bd be bf
+        // c + (...def) cd ce cf
+        const letters = map[digits[i]]
+        for (const letter of letters) {
+          dfs(curStr + letter, i + 1)
+        }
+      }
+      dfs('', 0)
+      return res
+    }
+    console.log(letterCombinations('2'))
+    console.log(letterCombinations('23'))
+    console.log(letterCombinations('234'))
+  </script>
+</body>
+</html>

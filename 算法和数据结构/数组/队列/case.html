@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>击鼓传花</title>
+</head>
+<body>
+  <script src="./queue.js"></script>
+  <script>
+    // 击鼓传花：参与者围成一个圈，花从第一个开始向下一个传递，当传递次数等于指定数字时，此参与者被淘汰，一直到只剩最后一个。
+    function passFlowers (list, number) {
+      const queue = new Queue()
+      const eliminatedList = []
+      for (let i = 0, len = list.length; i < len; i++) {
+        queue.enqueue(list[i])
+      }
+      while (queue.size() > 1) {
+        for (let i = 0; i < number; i++) {
+          queue.enqueue(queue.dequeue())
+        }
+        const name = queue.dequeue()
+        console.log('淘汰：' + name)
+        eliminatedList.push(name)
+      }
+      console.log('胜利者：' + queue.dequeue())
+    }
+    const list = ['AAA', 'BBB', 'CCC', 'DDD', 'EEE', 'FFF']
+    passFlowers(list, 5)
+  </script>
+</body>
+</html>

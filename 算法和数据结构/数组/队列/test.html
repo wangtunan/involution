@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>队列</title>
+</head>
+<body>
+  <script src="./queue.js"></script>
+  <script>
+    const queue = new Quque()
+    console.log(queue.isEmpty())
+    queue.enqueue('AAA')
+    queue.enqueue('BBB')
+    console.log(queue.toString())
+    queue.enqueue('CCC')
+    console.log(queue.toString())
+    console.log(queue.size())
+    console.log(queue.isEmpty())
+    queue.dequeue()
+    queue.dequeue()
+    console.log(queue.toString())
+  </script>
+</body>
+</html>

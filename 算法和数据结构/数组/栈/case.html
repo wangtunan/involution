@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>栈</title>
+</head>
+<body>
+  <script src="./stack.js"></script>
+  <script>
+    // example: 十进制转二进制
+    function numberToBinary (number) {
+      const stack = new Stack()
+      let num = number
+      let rem = 0
+      let res = ''
+      while (num > 0) {
+        rem = Math.floor(num % 2)
+        num = Math.floor(num / 2)
+        stack.push(rem)
+      }
+      while(!stack.isEmpty()) {
+        res += stack.pop()
+      }
+      return res
+    }
+    console.log(numberToBinary(8))
+    console.log(numberToBinary(10))
+    console.log(numberToBinary(233))
+    console.log(numberToBinary(1000))
+
+    // exmple: 十进制转任意2-36进制
+    function numberToBase (number, base = 10) {
+      if (base === 10) {
+        return number
+      }
+      if (base < 2 || base > 36) {
+        return ''
+      }
+      const stack = new Stack()
+      const digits = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+      let num = number
+      let baseStr = ''
+      let rem = 0
+      while (num > 0) {
+        rem = Math.floor(num % base)
+        num = Math.floor(num / base)
+        stack.push(rem)
+      }
+      while(!stack.isEmpty()) {
+        baseStr += digits[stack.pop()]
+      }
+      return baseStr
+    }
+    console.log(numberToBase(100345, 2))
+    console.log(numberToBase(100345, 8))
+    console.log(numberToBase(100345, 10))
+    console.log(numberToBase(100345, 16))
+    console.log(numberToBase(100345, 35))
+    console.log(numberToBase(100345, 36))
+  </script>
+</body>
+</html>
