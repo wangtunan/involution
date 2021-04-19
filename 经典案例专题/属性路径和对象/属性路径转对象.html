@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>属性路径转对象</title>
+</head>
+<body>
+  <script>
+    // 设计一个path对象，他有get和set两个方法
+    // path.set(obj: any, path: string, data: any) 
+    // path.get(obj: path)
+    // example1: 
+    // path.set(obj, 'a.b', 'AAA')
+    // path.set(obj, 'a.c.d', 'BBB')
+    // example2: 
+    // path.get(obj, 'a.b') 输出’AAA‘
+    // path.get(obj, 'a.c.d') 输出’BBB‘
+    const obj = {
+      a: {
+        b: 'AAA',
+        c: {
+          d: 'BBB'
+        }
+      }
+    }
+    const path = {
+      toPath (strPath) {
+        return strPath.split('.').filter(item => item.trim())
+      },
+      get (obj, strPath) {
+        const keyArr = this.toPath(strPath)
+        let curr = obj
+        keyArr.forEach(key => {
+          if (!curr[key]) {
+            return undefined
+          }
+          curr = curr[key]
+        })
+        return curr
+      },
+      set (obj, strPath, data) {
+        const keyArr = this.toPath(strPath)
+        let curr = obj
+        const len = keyArr.length
+        for(let i = 0; i < len; i++) {
+          const key = keyArr[i]
+          if (i === len - 1) {
+            curr[key] = data
+          } else {
+            if (!curr[key]) {
+              curr[key] = {}
+            }
+            curr = curr[key]
+          }
+        }
+      }
+    }
+    console.log(path.get(obj, 'a.b'))   // AAA
+    console.log(path.get(obj, 'a.c.d')) // BBB
+    path.set(obj, 'a.b', 'aaa')
+    path.set(obj, 'a.c.d', 'bbb')
+    path.set(obj, 'a.e.f', 'ccc')
+    console.log(path.get(obj, 'a.b'))   // aaa
+    console.log(path.get(obj, 'a.c.d')) // bbb
+    console.log(path.get(obj, 'a.e.f')) // ccc
+  </script>
+</body>
+</html>

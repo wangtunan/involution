@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>对象转属性路径</title>
+</head>
+<body>
+  <script>
+    // 设计一个flatten方法，该方法能把obj转换成如下所示对象：
+    /*
+    {
+      'a.b': 1,
+      'a.c': 2,
+      'a.d': 3,
+      'b[0]': 1,
+      'b[1]': 2
+      'b[2].e': 3
+      'b[3].f': 4
+      'c': 3
+    }
+    */
+    const obj = {
+      a: {
+        b: 1,
+        c: 2,
+        d: 3
+      },
+      b: [
+        1,
+        2, 
+        {
+          e: 3
+        },
+        {
+          f: 4
+        }
+      ],
+      c: 3
+    }
+    function isObject (obj) {
+      return obj !== null && typeof obj === 'object'
+    }
+    function flatten (obj, path = '') {
+      const keys = Object.keys(obj)
+      if (keys.length === 0) return {}
+      let pathKey
+      let res = {}
+      keys.forEach(key => {
+        let curr = res
+        const val = obj[key]
+        pathKey = path ? `${path}.${key}` : key
+        if (Array.isArray(val)) {
+          val.forEach((item, index) => {
+            pathKey = path ? `${path}[${index}]` : `${key}[${index}]`
+            if (isObject(item)) {
+              res = Object.assign({}, res, flatten(item, pathKey))
+            } else {
+              res[pathKey] = item
+            }
+          })
+        } else if (isObject(val)) {
+          res = Object.assign({}, res, flatten(val, key))
+        } else {
+          res[pathKey] = val
+        }
+      })
+      return res
+    }
+    console.log(flatten(obj))
+  </script>
+</body>
+</html>
