@@ -1,14 +1,11 @@
-// 链表：存储有序的元素集合，不同于数组，链表中元素在内存中并不是连续放置的
-//      它由存储元素本身的节点和一个指向下一个元素的引用组成.
-// 优点：添加、删除时不需要移动元素(对比数组)
-// 缺点：遍历时，需要从头开始遍历查找(对比数组)
+// 循环链表：循环链表和单向链表的唯一区别是最后一个元素指向头结点(head)而不是null
 class Node {
   constructor (value) {
     this.value = value
     this.next = null
   }
 }
-class LinkedList {
+class CircularLinkedList {
   constructor () {
     this.count = 0
     this.head = null
@@ -21,6 +18,7 @@ class LinkedList {
       const current = this.getElementAt(this.count - 1)
       current.next = node
     }
+    node.next = this.head
     this.count++
   }
   insert (value, index) {
@@ -28,44 +26,57 @@ class LinkedList {
       return false
     }
     const node = new Node(value)
-    let current
+    let current = this.head
     if (index === 0) {
-      current = this.head
-      node.next = current
-      this.head = node
+      if (this.head === null) {
+        this.head = node
+        node.next = this.head
+      } else {
+        node.next = current
+        this.head = node
+        current = this.getElementAt(this.count)
+        current.next = this.head
+      }
     } else {
       const prev = this.getElementAt(index - 1)
-      current = prev.next
-      node.next = current
+      node.next = prev.next
       prev.next = node
     }
     this.count++
     return true
   }
-  getElementAt(index) {
+  getElementAt (index) {
     if (index < 0 || index > this.count) {
       return undefined
     }
-    let node = this.head
-    for (let i = 0; i < index && node !== null; i++) {
-      node = node.next
+    let current = this.head
+    for (let i = 0; i < index && current !== null; i++) {
+      current = current.next
     }
-    return node
+    return current
   }
   getHead () {
     return this.head
   }
   remove (value) {
     const index = this.indexOf(value)
-    if (index === -1) {
-      return false
-    }
     return this.removeAt(index)
   }
   removeAt (index) {
+    if (index < 0 || index > this.count) {
+      return undefined
+    }
     let current = this.head
     if (index === 0) {
-      this.head = current.next
+      if (this.count === 1) {
+        this.head = null
+      } else {
+        const removed = this.head
+        current = this.getElementAt(this.count - 1)
+        this.head = this.head.next
+        current.next = this.head
+        current = removed
+      }
     } else {
       const prev = this.getElementAt(index - 1)
       current = prev.next
@@ -75,6 +86,9 @@ class LinkedList {
     return current.value
   }
   indexOf (value) {
+    if (this.isEmpty()) {
+      return -1
+    }
     let current = this.head
     for (let i = 0; i < this.count && current !== null; i++) {
       if (current.value === value) {
@@ -85,7 +99,7 @@ class LinkedList {
     return -1
   }
   isEmpty () {
-    return this.size () === 0
+    return this.size() === 0
   }
   size () {
     return this.count

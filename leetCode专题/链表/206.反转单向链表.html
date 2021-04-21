@@ -7,36 +7,9 @@
   <title>反转单向链表</title>
 </head>
 <body>
+  <script src="./utils.js"></script>
   <script>
     // leetCode: https://leetcode-cn.com/problems/reverse-linked-list/
-    class Node {
-      constructor (value) {
-        this.value = value
-        this.next = null
-      }
-    }
-    class LinkedList {
-      constructor () {
-        this.count = 0
-        this.head = null
-      }
-      push (value) {
-        const node = new Node(value)
-        if (this.count === 0) {
-          this.head = node
-        } else {
-          let current = this.head
-          while (current.next !== null) {
-            current = current.next
-          }
-          current.next = node
-        }
-        this.count++
-      }
-      getHead () {
-        return this.head
-      }
-    }
     const list = new LinkedList()
     list.push(1)
     list.push(2)

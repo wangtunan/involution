@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>删除链表第N个节点</title>
+</head>
+<body>
+  <script src="./utils.js"></script>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/remove-nth-node-from-end-of-list/
+    const list1 = new LinkedList()
+    list1.push(1)
+    list1.push(2)
+    list1.push(3)
+    list1.push(4)
+    list1.push(5)
+    const list2 = new LinkedList()
+    list2.push(1)
+    list2.push(2)
+
+    function removeNthFromEnd (head, n) {
+      const nodeStack = []
+      let current = head
+      while (current !== null) {
+        nodeStack.push(current)
+        current = current.next
+      }
+      for (let i = 0; i < n; i++) {
+        nodeStack.pop()
+      }
+      const prev = nodeStack.pop()
+      // 前驱节点没有，删除的是第一个节点
+      if (prev) {
+        prev.next = prev.next.next
+      } else {
+        head = head.next
+      }
+      return head
+    }
+    console.log(removeNthFromEnd(list1.getHead(), 2))
+    console.log(removeNthFromEnd(list2.getHead(), 2))
+  </script>
+</body>
+</html>
