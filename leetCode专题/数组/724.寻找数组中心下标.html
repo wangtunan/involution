@@ -9,6 +9,22 @@
 <body>
   <script>
     // leetCode: https://leetcode-cn.com/problems/find-pivot-index/
+    function pivotIndex (nums) {
+      const total = nums.reduce((a, b) => a + b, 0)
+      let sum = 0
+      for (let i = 0; i < nums.length; i++) {
+        if (2 * sum + nums[i] === total) {
+          return i
+        }
+        sum += nums[i]
+      }
+      return -1
+    }
+    console.log(3, pivotIndex([1, 7, 3, 6, 5, 6]))
+    console.log(-1, pivotIndex([1, 2, 3]))
+    console.log(0, pivotIndex([2, 1, -1]))
+    console.log(-1, pivotIndex([-1,-1,-1,-1,-1,-1]))
+    console.log(2, pivotIndex([-1,-1,-1,-1,-1,0]))
   </script>
 </body>
 </html>

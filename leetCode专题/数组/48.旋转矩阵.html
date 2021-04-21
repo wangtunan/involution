@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>旋转矩阵</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/rotate-image/
+    // way1: 辅助矩阵数组，时间复杂度O(n²) 空间复杂的O(n²)
+    function rotate1 (matrix) {
+      const len = matrix.length
+      if (len < 2) return matrix
+      const newMatrix = new Array(len).fill(0).map(item => new Array(len).fill(0))
+      // 每一次的值放在其旋转后对应的位置
+      for(let i = 0; i < len; i++) {
+        const index = len - 1 - i
+        for (let j = 0; j < len; j++) {
+          newMatrix[j][index] = matrix[i][j]
+        }
+      }
+      // 旋转后的值，再复制到原始数组
+      // 题目要求为原地旋转，既参数matrix和返回matrix引用地址一样，如果不原地选择，可直接返回newArr
+      for (let i = 0; i < len; i++) {
+        for (let j = 0; j < len; j++) {
+          matrix[i][j] = newMatrix[i][j]
+        }
+      }
+      return matrix
+    }
+    // [[3,1],[4,2]]
+    console.log(rotate1([[1,2],[3,4]]))
+    // [[7,4,1],[8,5,2],[9,6,3]]
+    console.log(rotate1([[1,2,3],[4,5,6],[7,8,9]]))
+    // [[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]
+    console.log(rotate1([[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]))
+
+    // way2: 先水平方向折叠，再对角线折叠，时间复杂度O(n²)，空间复杂度O(1)
+    function rotate2 (matrix) {
+      const len = matrix.length
+      if (len < 2) return matrix
+      // 水平方向折叠
+      for (let i = 0, n = Math.floor(len / 2); i < n; i++) {
+        const index = len - i - 1
+        for (let j = 0; j < len; j++) {
+          const temp = matrix[i][j]
+          matrix[i][j] = matrix[index][j]
+          matrix[index][j] = temp
+        }
+      }
+      // 对角线折叠
+      for (let i = 0; i < len; i++) {
+        for (let j = 0; j < i; j++) {
+          const temp = matrix[i][j]
+          matrix[i][j] = matrix[j][i]
+          matrix[j][i] = temp
+        }
+      }
+      return matrix
+    }
+    // [[3,1],[4,2]]
+    console.log(rotate2([[1,2],[3,4]]))
+    // [[7,4,1],[8,5,2],[9,6,3]]
+    console.log(rotate2([[1,2,3],[4,5,6],[7,8,9]]))
+    // [[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]
+    console.log(rotate2([[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]))
+  </script>
+</body>
+</html>
