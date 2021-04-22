@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>对角线遍历</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/diagonal-traverse/
+    // 时间复杂度O(MN)
+    // 思路：对角线迭代，每次都从对角线遍历，当奇数对角线时，反转数字
+    function findDiagonalOrder (matrix) {
+      if (matrix.length === 0) return []
+      if (matrix.length === 1) return matrix[0]
+      const N = matrix.length
+      const M = matrix[0].length
+      const lines = M + N - 1
+      const result = []
+      let temp = []
+      let i, j
+      // 对角线遍历
+      for (let d = 0; d < lines; d++) {
+        temp = []
+        // 遍历对角线上的元素
+        i = d < M ? 0 : d - M + 1
+        j = d < M ? d : M - 1
+        while (i < N && j >= 0) {
+          temp.push(matrix[i][j])
+          i++
+          j--
+        }
+        // 奇数的对角线(d从0开始)
+        if (d % 2 === 0) {
+          temp.reverse()
+        }
+        result.push(...temp)
+      }
+      return result
+    }
+    const matrix = [
+      [ 1, 2, 3 ],
+      [ 4, 5, 6 ],
+      [ 7, 8, 9 ]
+    ]
+    // [1, 2, 4, 7, 5, 3, 6, 8, 9]
+    console.log(findDiagonalOrder(matrix))
+    console.log(findDiagonalOrder([[2, 3]]))
+  </script>
+</body>
+</html>
