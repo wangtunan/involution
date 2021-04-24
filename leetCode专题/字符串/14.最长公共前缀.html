@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>最长公共前缀</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/longest-common-prefix/
+    function longestCommonPrefix (strs) {
+      if (strs.length === 0) return ""
+      let flagStr = strs[0]
+      for (let i = 1; i < strs.length; i++) {
+        let j = 0
+        for (; j < flagStr.length && j < strs[i].length; j++) {
+          if (flagStr[j] !== strs[i][j]) {
+            break
+          }
+        }
+        flagStr = flagStr.substring(0, j)
+        if (flagStr.length === 0) {
+          return ''
+        }
+      }
+      return flagStr
+    }
+    console.log('fl', longestCommonPrefix(["flower","flow","flight"]))
+    console.log('', longestCommonPrefix(["dog","racecar","car"]))
+  </script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>实现strStr方法</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/implement-strstr/
+    function strStr (haystack, needle) {
+      const m = haystack.length, n = needle.length
+      if (n === 0) return 0
+      if (m === 0) return -1
+      for (let i = 0; i < m; i++) {
+        const subStr = haystack.substring(i, i + n)
+        if (subStr === needle) {
+          return i
+        }
+      }
+      return -1
+    }
+    console.log(2, strStr('hellp', 'll'))
+    console.log(-1, strStr('aaaaa', 'bba'))
+    console.log(0, strStr('aaaaa', ''))
+    console.log(1, strStr('mississippi', 'issi'))
+    console.log(0, strStr('', ''))
+  </script>
+</body>
+</html>

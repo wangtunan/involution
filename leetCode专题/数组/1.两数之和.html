@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>两数之和</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/two-sum/
+    function twoSum (nums, target) {
+      const map = new Map()
+      for (let i = 0; i < nums.length; i++) {
+        const diff = target - nums[i]
+        if (map.has(diff)) {
+          return [map.get(diff), i]
+        }
+        map.set(nums[i], i)
+      }
+      return []
+    }
+    console.log([0, 1], twoSum([2,7,11,15], 9))
+    console.log([1, 2], twoSum([3,2,4], 6))
+    console.log([0, 1], twoSum([3,3], 6))
+  </script>
+</body>
+</html>

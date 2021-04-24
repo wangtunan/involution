@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>反转字符串II</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/reverse-string-ii/
+    function reverseStr (s, k) {
+      let index = 0
+      let res = s.split('')
+      while (index < res.length) {
+        const stepStr = s.substring(index, index + 2 * k)
+        const str = stepStr.substring(0, k)
+        let j = index
+        for (let i = k - 1; i >= 0; i--) {
+          res[j++] = str[i]
+        }
+        index += 2 * k
+      }
+      return res.join('')
+    }
+    console.log('bacdfeg', reverseStr('abcdefg', 2))
+  </script>
+</body>
+</html>

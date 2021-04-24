@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数组拆分I</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/array-partition-i/
+    // 思路：两两取最小值，最大的几个数一定会被浪费掉，只能取第二大的数。
+    function arrayPairSum (nums) {
+      nums = quickSort(nums)
+      let res = 0
+      for (let i = 0; i < nums.length; i+=2) {
+        res += nums[i]
+      }
+      return res
+    }
+    function quickSort (array) {
+      const swap = (arr, i, j) => {
+        const temp = arr[i]
+        arr[i] = arr[j]
+        arr[j] = temp
+      }
+      const findIndex = (arr, left, right) => {
+        let index = left + 1
+        let flag = arr[left]
+        for (let i = left; i <= right; i++) {
+          if (flag > arr[i]) {
+            swap(arr, index, i)
+            index++
+          }
+        }
+        swap(arr, left, index - 1)
+        return index
+      }
+      const sort = (arr, left, right) => {
+        if (left < right) {
+          const index = findIndex(arr, left, right)
+          sort(arr, left, index - 1)
+          sort(arr, index, right)
+        }
+        return arr
+      }
+      return sort(array, 0, array.length - 1)
+    }
+    console.log(4, arrayPairSum([1,4,3,2]))
+    console.log(9, arrayPairSum([6,2,6,5,1,2]))
+  </script>
+</body>
+</html>

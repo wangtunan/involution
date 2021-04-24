@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>反转字符串</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/reverse-string/
+    function reverseString (str) {
+      if (str.length < 2) return str
+      let left = 0, right = str.length - 1
+      while (left < right) {
+        const temp = str[left]
+        str[left] = str[right]
+        str[right] = temp
+        left++
+        right--
+      }
+      return str
+    }
+    console.log(reverseStr(["h","e","l","l","o"]))
+  </script>
+</body>
+</html>
