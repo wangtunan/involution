@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>最大连续1的个数</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/max-consecutive-ones/
+    function findMaxConsecutiveOnes (nums) {
+      let fast = 0, slow = 0
+      let max = 0
+      while (fast < nums.length) {
+        if (nums[fast] !== 1) {
+          max = Math.max(max, fast - slow)
+          fast++
+          slow = fast
+        } else {
+          fast++
+        }
+      }
+      return Math.max(max, fast - slow)
+    }
+    console.log(3, findMaxConsecutiveOnes([1,1,0,1,1,1]))
+    console.log(2, findMaxConsecutiveOnes([1,0,1,1,0,1]))
+    console.log(6, findMaxConsecutiveOnes([1,1,1,1,1,1]))
+  </script>
+</body>
+</html>
