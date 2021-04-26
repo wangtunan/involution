@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>删除排序数组的重复性</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array/
+    function removeDuplicates (nums) {
+      const len = nums.length
+      if (len === 0) return 0
+      if (len === 1) return nums
+      let slow = 1, fast = 1
+      while (fast < len) {
+        if (nums[fast] !== nums[fast-1]) {
+          nums[slow] = nums[fast]
+          slow++
+        }
+        fast++
+      }
+      return slow
+    }
+    console.log(2, removeDuplicates([1,1,2]))
+    console.log(5, removeDuplicates([0,0,1,1,1,2,2,3,3,4]))
+  </script>
+</body>
+</html>

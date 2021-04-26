@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>移动零</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/move-zeroes/
+    // [0,1,0,3,12]
+    // 0 => [1, 0, 0, 3, 12]
+    function moveZeroes (nums) {
+      const len = nums.length
+      if (len < 2) return nums
+      let slow = 0, fast = 0
+      while (fast < len) {
+        if (nums[fast] !== 0) {
+          swap(nums, slow, fast)
+          slow++
+        }
+        fast++
+      }
+      return nums
+    }
+    function swap (arr, i, j) {
+      const temp = arr[i]
+      arr[i] = arr[j]
+      arr[j] = temp
+    }
+    console.log(moveZeroes([0,1,0,3,12]))
+  </script>
+</body>
+</html>
