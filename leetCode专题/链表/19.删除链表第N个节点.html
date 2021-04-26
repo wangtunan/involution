@@ -20,6 +20,7 @@
     list2.push(1)
     list2.push(2)
 
+    // way1: 栈结构方法
     function removeNthFromEnd (head, n) {
       const nodeStack = []
       let current = head
@@ -39,6 +40,8 @@
       }
       return head
     }
+    // way2: 双指针方法
+    // TDD
     console.log(removeNthFromEnd(list1.getHead(), 2))
     console.log(removeNthFromEnd(list2.getHead(), 2))
   </script>

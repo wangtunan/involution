@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>删除排序链表中的重复元素</title>
+</head>
+<body>
+  <script src="./utils.js"></script>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list/
+    function deleteDuplicates (head) {
+      if (head === null || head.next === null) {
+        return head
+      }
+      let curr = head
+      while (curr && curr.next) {
+        const next = curr.next
+        if (curr.value !== next.value) {
+          curr = next
+        } else {
+          curr.next = next.next
+        }
+      }
+      return head
+    }
+    const list = new LinkedList()
+    list.push(1)
+    list.push(1)
+    list.push(2)
+    // list.push(3)
+    // list.push(3)
+    console.log(deleteDuplicates(list.getHead()))
+  </script>
+</body>
+</html>

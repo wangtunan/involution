@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>相交链表</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/intersection-of-two-linked-lists/
+    function getIntersectionNode (headA, headB) {
+      if (!headA || !headB) return null
+      let currA = headA
+      let currB = headB
+      while (currA !== currB) {
+        currA = currA === null ? headB : currA.next
+        currB = currB === null ? headA : currB.next
+      }
+      return currA
+    }
+  </script>
+</body>
+</html>
