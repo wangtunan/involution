@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>用栈实现队列</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/implement-queue-using-stacks/
+    class MyQueue {
+      constructor () {
+        this.in = []
+        this.out = []
+      }
+      push (val) {
+        this.in.push(val)
+      }
+      pop () {
+        this.inToOut()
+        return this.out.pop()
+      }
+      peek () {
+        this.inToOut()
+        return this.out[this.out.length - 1]
+      }
+      empty () {
+        return this.in.length === 0 && this.out.length === 0
+      }
+      inToOut () {
+        if (!this.out.length) {
+          while (this.in.length) {
+            this.out.push(this.in.pop())
+          }
+        }
+      }
+    }
+    const queue = new MyQueue()
+    queue.push(1)
+    queue.push(2)
+    console.log(queue.peek())
+    console.log(queue.pop())
+    console.log(queue.empty())
+  </script>
+</body>
+</html>

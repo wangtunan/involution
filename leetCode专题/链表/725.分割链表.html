@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>分割链表</title>
+</head>
+<body>
+  <script src="./utils.js"></script>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/split-linked-list-in-parts/
+    function splitListToParts (root, k) {
+      const res = new Array(k).fill(null)
+      if (root === null || k === 1) return res
+      // 入栈
+      const stack = []
+      let curr = root
+      while (curr) {
+        stack.push(curr)
+        curr = curr.next
+      }
+      let size = stack.length
+      // 如果k >= size不需要动态分割
+      if (k >= size) {
+        for (let i = 0; i < size; i++) {
+          const node = stack[i]
+          node.next = null
+          res[i] = [node]
+        }
+        return res
+      }
+      // 根据栈长度和k确定分割节点
+      // 10 / 3 => num:4 k:2 steps:[3]
+      // 6 /  2 => num:3 k:1 steps:[3, 6]
+      // 3 /  1 => num:3 k:0 steps:[3, 6, 9]
+      const steps = []
+      let stepIndex = 0
+      while (size > 0) {
+        const num = Math.ceil(size / k)
+        size = size - num
+        stepIndex = stepIndex === 0 ? stepIndex + num - 1 : stepIndex + num
+        steps.push(stepIndex)
+        k--
+      }
+      // 遍历栈数组，分割链表
+      // [3, 6, 9]为分割节点
+      // [0, 4, 7]位返回节点
+      for (let i = 0; i < steps.length; i++) {
+        const step = steps[i]
+        stack[step].next = null
+        if (i === 0) {
+          res[i] = [stack[0]]
+        } else {
+          res[i] = [stack[steps[i - 1] + 1]]
+        }
+      }
+      console.log(stack)
+      return res
+    }
+    const list = new LinkedList()
+    list.push(1)
+    list.push(2)
+    list.push(3)
+    list.push(4)
+    list.push(5)
+    list.push(6)
+    list.push(7)
+    list.push(8)
+    list.push(9)
+    list.push(10)
+    console.log(splitListToParts(list.getHead(), 3))
+  </script>
+</body>
+</html>

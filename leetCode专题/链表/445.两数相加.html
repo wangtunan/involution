@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>两数相加</title>
+</head>
+<body>
+  <script src="./utils.js"></script>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/add-two-numbers-ii/
+    // 思路：栈保存值
+    function addTwoNumbers (l1, l2) {
+      const stack1 = [], stack2 = []
+      // 入栈
+      while (l1) {
+        stack1.push(l1.val)
+        l1 = l1.next
+      }
+      while (l2) {
+        stack2.push(l2.val)
+        l2 = l2.next
+      }
+
+      // 出栈结算结果
+      let carry = 0
+      let curr = null
+      let maxLen = Math.max(stack1.length, stack2.length)
+      while (maxLen > 0) {
+        const num1 = parseInt(stack1.pop() || 0, 10)
+        const num2 = parseInt(stack2.pop() || 0, 10)
+        let res = num1 + num2 + carry
+        carry = Math.floor(res / 10)
+        res = res % 10
+        const node = new Node(res)
+        node.next = curr
+        curr = node
+        maxLen--
+      }
+      // 最后的进位
+      if (carry > 0) {
+        const node = new Node(carry)
+        node.next = curr
+        curr = node
+      }
+      return curr
+    }
+    const list1 = new LinkedList()
+    list1.push(5)
+    // list1.push(2)
+    // list1.push(4)
+    // list1.push(3)
+    const list2 = new LinkedList()
+    list2.push(5)
+    // list2.push(6)
+    // list2.push(4)
+    console.log(addTwoNumbers(list1.getHead(), list2.getHead()))
+  </script>
+</body>
+</html>

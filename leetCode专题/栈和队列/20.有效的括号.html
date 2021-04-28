@@ -9,12 +9,7 @@
 <body>
   <script>
     // leetCode: https://leetcode-cn.com/problems/valid-parentheses/
-    // 进阶题：有效的括号字符串 https://leetcode-cn.com/problems/valid-parenthesis-string/
-    function checkValidString (str) {
-      // 空字符串也是有效的
-      if (str.length === 0) {
-        return true
-      }
+    function isValid (str) {
       const mapObj = {
         ')': '(',
         ']': '[',
@@ -35,11 +30,11 @@
       }
       return !stack.length
     }
-    console.log(checkValidString('()'))       // true
-    console.log(checkValidString('()[]{}'))   // true
-    console.log(checkValidString('([{}])'))   // true
-    console.log(checkValidString('([})'))     // false
-    console.log(checkValidString('()[}'))     // false
+    console.log(isValid('()'))       // true
+    console.log(isValid('()[]{}'))   // true
+    console.log(isValid('([{}])'))   // true
+    console.log(isValid('([})'))     // false
+    console.log(isValid('()[}'))     // false
   </script>
 </body>
 </html>

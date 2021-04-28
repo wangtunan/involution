@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>下一个更大元素II</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/next-greater-element-ii/
+    function nextGreaterElements (nums) {
+      const len = nums.length
+      if (len === 0) return []
+      if (len === 1) return [-1]
+      const res = new Array(len).fill(-1)
+      const stack = []
+      const itLen = len * 2 - 1
+      for (let i = 0; i < itLen; i++) {
+        while (stack.length && nums[i % len] > nums[stack[stack.length-1]]) {
+          const peekIndex = stack[stack.length-1]
+          res[peekIndex] = nums[i % len]
+          stack.pop()
+        }
+        stack.push(i % len)
+      }
+      return res
+    }
+    // [2, -1, 2]
+    console.log(nextGreaterElements([1, 2, 1]))
+  </script>
+</body>
+</html>

@@ -17,7 +17,7 @@
       let curr = head
       while (curr && curr.next) {
         const next = curr.next
-        if (curr.value !== next.value) {
+        if (curr.val !== next.val) {
           curr = next
         } else {
           curr.next = next.next
@@ -29,8 +29,8 @@
     list.push(1)
     list.push(1)
     list.push(2)
-    // list.push(3)
-    // list.push(3)
+    list.push(3)
+    list.push(3)
     console.log(deleteDuplicates(list.getHead()))
   </script>
 </body>
