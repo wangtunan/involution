@@ -9,12 +9,13 @@
 <body>
   <script>
     // leetCode：https://leetcode-cn.com/problems/count-binary-substrings/
-    function countBinaryStr (str) {
+    // way1: 数字分组思想
+    // 思路：[00110011] => [2,2,2,2] => [2,2], [2, 2], [2, 2] => 6
+    function countBinaryStr1 (str) {
       const counters = []
       const len = str.length
       let index = 0
       let result = 0
-      // 00110011 => [2, 2, 2, 2]
       while(index < len) {
         let c = str[index]
         let counter = 0
@@ -24,14 +25,34 @@
         }
         counters.push(counter)
       }
-      // [2, 2, 2, 2] => 6
       for (let i = 1, len; i < counters.length; i++) {
         result += Math.min(counters[i], counters[i-1])
       }
       return result
     }
-    console.log(countBinaryStr('00110011')) // 6
-    console.log(countBinaryStr('10101'))    // 4
+    console.log(6, countBinaryStr1('00110011'))
+    console.log(4, countBinaryStr1('10101'))
+    // way2: 计数法
+    // 思路：字符相同时，累加计数；不相同时，计算数量
+    function countBinaryStr2 (str) {
+      let prev = 0, curr = 1, res = 0
+      for (let i = 0; i < str.length - 1; i++) {
+        if (str[i] === str[i+1]) {
+          curr++
+        } else {
+          prev = curr
+          curr = 1
+        }
+        // 示例：00和1
+        // 说明：2 >= 1 至少有一个满足条件01
+        if (prev >= curr) {
+          res++
+        }
+      }
+      return res
+    }
+    console.log(6, countBinaryStr2('00110011'))
+    console.log(4, countBinaryStr2('10101'))
   </script>
 </body>
 </html>

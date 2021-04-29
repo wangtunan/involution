@@ -10,8 +10,29 @@
   <script>
     // leetCode: https://leetcode-cn.com/problems/longest-palindrome/
     function longestPalindrome (str) {
-
+      const len = str.length
+      if (len === 0 || len === 1) return len
+      let res = 0
+      // 计算每个字符出现的数量
+      const map = {}
+      for (let i = 0; i < len; i++) {
+        const char = str[i]
+        if (char in map) {
+          map[char] = map[char] + 1
+        } else {
+          map[char] = 1
+        }
+      }
+      // 根据字符数量计算长度
+      for (char in map) {
+        res += Math.floor(map[char] / 2) * 2
+      }
+      if (res < len) {
+        res++
+      }
+      return res
     }
+    console.log(longestPalindrome('abccccdd'))
   </script>
 </body>
 </html>
