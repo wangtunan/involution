@@ -11,6 +11,7 @@
     // MDN: Array.prototype.reduce
     Array.prototype.myMap = function (callback, context) {
       return this.reduce((acc, cur, index, array) => {
+        // 使用索引处理不连续数组: [1,,,,2,,3]
         acc[index] = callback.call(context, cur, index, array)
         return acc
       }, [])

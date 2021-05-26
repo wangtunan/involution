@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大数相加</title>
+</head>
+<body>
+  <script>
+    // 大数相加
+    function bigAdd (a, b) {
+      a = String(a)
+      b = String(b)
+      const maxLen = Math.max(a.length, b.length)
+      a = a.padStart(maxLen, '0')
+      b = b.padStart(maxLen, '0')
+      let rest = 0
+      let result = new Array(maxLen)
+      for (let i = maxLen - 1; i >= 0; i--) {
+        const num1 = parseInt(a[i], 10)
+        const num2 = parseInt(b[i], 10)
+        const total = num1 + num2 + rest
+        rest = Math.floor(total / 10)
+        result[i] = total % 10
+      }
+      if (rest > 0) {
+        result.unshift(rest)
+      }
+      return result.join('')
+    }
+
+    console.log(bigAdd(987654321, 321), 987654321 + 321)
+  </script>
+</body>
+</html>
