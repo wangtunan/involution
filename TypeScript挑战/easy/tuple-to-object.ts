@@ -13,4 +13,3 @@ type test = TupleToObject<typeof tuple>
 type testCases = [
   Expect<Equal<{ msg: 'msg', name: 'name' }, TupleToObject<typeof tuple>>>
 ]
-
