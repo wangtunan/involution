@@ -78,3 +78,34 @@ type lengthResult = Length<{ 1: 'AAA', length: 10 }>
 type ifResult = If<false, 'a', 'b'>
 type concatResult = Concat<[1, 2], ['msg', true]>
 type inclduesResult = Includes<[1, 2], 1>
+
+
+
+
+// type NumberMap = {
+//   '0': [],
+//   '1': [1],
+//   '2': [1, 1],
+//   '3': [1, 1, 1],
+//   '4': [1, 1, 1, 1],
+//   '5': [1, 1, 1, 1, 1],
+//   '6': [1, 1, 1, 1, 1, 1],
+//   '7': [1, 1, 1, 1, 1, 1, 1],
+//   '8': [1, 1, 1, 1, 1, 1, 1, 1],
+//   '9': [1, 1, 1, 1, 1, 1, 1, 1, 1]
+// }
+// type NumberKeys = keyof NumberMap
+// type Multiply10<T extends ReadonlyArray<any> = []> = [...T, ...T, ...T, ...T, ...T, ...T, ...T, ...T, ...T, ...T]
+// type ToNumber<T extends string, A extends any[] = []> = 
+//   T extends `${infer L}${infer R}`
+//   ? L extends NumberKeys
+//     ? ToNumber<R, [...Multiply10<A>, ...NumberMap[L]]>
+//     : never
+//   : A['length']
+
+// type t1 = ToNumber<'10'>
+// // 1 0 => [,,,,,,,,,,, ]
+
+// 10 = 10 + 0
+// 123 = (（10 + 1) * 10 + 2) * 10 + 3
+// 11
