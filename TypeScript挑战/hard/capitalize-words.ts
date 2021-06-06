@@ -1,5 +1,5 @@
 import { Equal, Expect } from "../index"
-// 用法：讲字符串中的单词首字母大写
+// 用法：将字符串中的单词首字母大写
 // way1: 借助额外字符串
 // type CapitalizeWords<
 //   S extends string,
