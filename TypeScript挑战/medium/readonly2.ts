@@ -27,8 +27,8 @@ const obj: result = {
   completed: true
 }
 obj.title = 'aaa'
-obj.desc = '32' // error readonly
-obj.completed = false // error readonly
+obj.desc = '32' // error
+obj.completed = false // error
 
 // test
 type testCases = [
