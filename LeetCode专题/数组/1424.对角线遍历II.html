@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>对角线遍历</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/diagonal-traverse-ii/
+    // way1思路：参照对角线I的思路，遍历对角线
+    // function findDiagonalOrder (matrix) {
+    //   if (matrix.length === 0) return []
+    //   if (matrix.length === 1) return matrix[0]
+    //   const result = []
+    //   const N = matrix.length
+    //   const M = matrix.reduce((acc, cur) => Math.max(acc, cur.length) , 0)
+    //   const lines = M + N - 1
+    //   let i, j
+    //   for (let d = 0; d < lines; d++) {
+    //     i = d < N ? d : N - 1
+    //     j = d < N ? 0 : d - N + 1
+    //     while (j < M && i >= 0) {
+    //       const num = matrix[i][j]
+    //       if (typeof num === 'number') {
+    //         result.push(num)
+    //       }
+    //       i--
+    //       j++
+    //     }
+    //   }
+    //   return result
+    // }
+
+    // way2思路：下标聚合，反转数组
+    function findDiagonalOrder (matrix) {
+      if (matrix.length === 0) return []
+      if (matrix.length === 1) return matrix[0]
+      const array = []
+      // 按照下标聚合数组
+      for (let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < matrix[i].length; j++) {
+          if (!array[i+j]) {
+            array[i+j] = []
+          }
+          array[i+j].push(matrix[i][j])
+        }
+      }
+      return array.reduce((acc, cur) => {
+        return acc.concat(cur.reverse())
+      }, [])
+    }
+    // [1,4,2,7,5,3,8,6,9]
+    console.log(findDiagonalOrder([[1,2,3],[4,5,6],[7,8,9]]))
+    // [1,4,2,5,3,8,6,9,7,10,11]
+    console.log(findDiagonalOrder([[1,2,3],[4],[5,6,7],[8],[9,10,11]]))
+    // [1,6,2,8,7,3,9,4,12,10,5,13,11,14,15,16]
+    console.log(findDiagonalOrder([[1,2,3,4,5],[6,7],[8],[9,10,11],[12,13,14,15,16]]))
+  </script>
+</body>
+</html>

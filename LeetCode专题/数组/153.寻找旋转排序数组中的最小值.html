@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>寻找旋转排序数组中的最小值</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array/
+    function findMin (nums) {
+      const len = nums.length
+      if (len === 1) return nums[0]
+      let curr = nums[0]
+      let index = 0
+      for (let i = 0; i < len - 1; i++) {
+        if (nums[i+1] < nums[i]) {
+          index = i + 1
+          break
+        }
+      }
+      return nums[index]
+    }
+    console.log(1, getMin([3,4,5,1,2]))
+    console.log(0, getMin([4,5,6,7,0,1,2]))
+    console.log(11, getMin([11,13,15,17]))
+  </script>
+</body>
+</html>

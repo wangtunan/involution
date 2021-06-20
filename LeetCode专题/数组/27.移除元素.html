@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>移除元素</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/remove-element/
+    function removeElement (nums, val) {
+      const len = nums.length
+      if (len === 0) return 0
+      let fast = 0, slow = 0
+      while (fast < len) {
+        if (nums[fast] !== val) {
+          nums[slow++] = nums[fast]
+        }
+        fast++
+      }
+      return slow
+    }
+    console.log(2, removeElement([3,2,2,3], 3))
+    console.log(5, removeElement([0,1,2,2,3,0,4,2], 2))
+  </script>
+</body>
+</html>

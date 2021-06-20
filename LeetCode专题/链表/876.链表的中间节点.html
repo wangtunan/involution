@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>链表的中间节点</title>
+</head>
+<body>
+  <script src="./utils.js"></script>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/middle-of-the-linked-list/
+    const list1 = new LinkedList()
+    list1.push(1)
+    list1.push(2)
+    list1.push(3)
+    list1.push(4)
+    list1.push(5)
+    const list2 = new LinkedList()
+    list2.push(1)
+    list2.push(2)
+    list2.push(3)
+    list2.push(4)
+    list2.push(5)
+    list2.push(6)
+
+    function middleNode (head) {
+      const stack = []
+      let current = head
+      while (current !== null) {
+        stack.push(current)
+        current = current.next
+      }
+      let index = Math.floor(stack.length / 2)
+      return stack[index]
+    }
+    console.log(middleNode(list1.getHead()))
+    console.log(middleNode(list2.getHead()))
+  </script>
+</body>
+</html>

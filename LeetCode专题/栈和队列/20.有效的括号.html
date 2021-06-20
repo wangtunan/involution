@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>有效的括号字符串</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/valid-parentheses/
+    function isValid (str) {
+      const mapObj = {
+        ')': '(',
+        ']': '[',
+        '}': '{'
+      }
+      const chars = ['(', '[', '{']
+      const stack = []
+      for (let index = 0; index < str.length; index++) {
+        const char = str[index]
+        if (chars.includes(char)) {
+          stack.push(char)
+        } else {
+          const popChar = stack.pop()
+          if (mapObj[char] !== popChar) {
+            return false
+          }
+        }
+      }
+      return !stack.length
+    }
+    console.log(isValid('()'))       // true
+    console.log(isValid('()[]{}'))   // true
+    console.log(isValid('([{}])'))   // true
+    console.log(isValid('([})'))     // false
+    console.log(isValid('()[}'))     // false
+  </script>
+</body>
+</html>

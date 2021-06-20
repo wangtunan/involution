@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>回文子串</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/palindromic-substrings/
+    function countSubstrings (s) {
+      const n = s.length;
+      let ans = 0;
+      for (let i = 0; i < n; ++i) {
+        centerSubstrings(s, i, i)
+        centerSubstrings(s, i, i + 1)
+      }
+      function centerSubstrings (s, l, r) {
+        while (l >= 0 && r < n && s[l] === s[r]) {
+          l--
+          r++
+          ans++
+        }
+      }
+      return ans;
+    }
+    console.log(3, countSubstrings('abc'))
+    console.log(6, countSubstrings('aaa'))
+  </script>
+</body>
+</html>

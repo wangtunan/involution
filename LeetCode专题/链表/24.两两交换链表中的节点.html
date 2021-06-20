@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>两两交换链表中的节点</title>
+</head>
+<body>
+  <script src="./utils.js"></script>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/swap-nodes-in-pairs/
+    function swapPairs (head) {
+      if (head === null || head.next === null) {
+        return head
+      }
+      const node = new Node(-1)
+      node.next = head
+      let prev = node
+      let curr
+      let next
+      while (prev.next && prev.next.next) {
+        // 维护必要遍历
+        curr = prev.next
+        next = curr.next
+        // 两两交换
+        prev.next = next
+        curr.next = next.next
+        next.next = curr
+        // 迭代链表
+        prev = curr
+      }
+      return node.next
+    }
+    const list = new LinkedList()
+    list.push(1)
+    list.push(2)
+    list.push(3)
+    list.push(4)
+    console.log(swapPairs(list.getHead()))
+  </script>
+</body>
+</html>

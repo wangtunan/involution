@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>环形链表</title>
+</head>
+<body>
+  <script src="./utils.js"></script>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/linked-list-cycle/
+    function hasCycle (head) {
+      const set = new Set()
+      while (head !== null) {
+        if (set.has(head)) {
+          return true
+        } else {
+          set.add(head)
+        }
+        head = head.next
+      }
+      return false
+    }
+  </script>
+</body>
+</html>

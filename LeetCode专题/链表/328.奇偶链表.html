@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>奇偶链表</title>
+</head>
+<body>
+  <script src="./utils.js"></script>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/odd-even-linked-list/
+    function oddEvenList (head) {
+      let odd = head
+      let even = head.next
+      let evenHead = even
+      while (even && even.next) {
+        odd.next = odd.next.next
+        odd = odd.next
+        even.next = even.next.next
+        even = even.next
+      }
+      odd.next = evenHead
+      return head
+    }
+    const list = new LinkedList()
+    list.push(1)
+    list.push(2)
+    list.push(3)
+    list.push(4)
+    list.push(5)
+    console.log(oddEvenList(list.getHead()))
+  </script>
+</body>
+</html>

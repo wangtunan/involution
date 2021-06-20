@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>零矩阵</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/zero-matrix-lcci/
+    function setZeroes (matrix) {
+      const len = matrix.length
+      const rows = new Set()
+      const cols = new Set()
+      // 记录存在0元素的i,j索引
+      for(let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < matrix[i].length; j++) {
+          if (matrix[i][j] === 0) {
+            !rows.has(i) && rows.add(i)
+            !cols.has(j) && cols.add(j)
+          }
+        }
+      }
+      // 再次遍历时i,j满足，则清零
+      for (let i = 0; i < matrix.length; i++) {
+        for (let j = 0; j < matrix[i].length; j++) {
+          if (rows.has(i) || cols.has(j)) {
+            matrix[i][j] = 0
+          }
+        }
+      }
+      return matrix
+    }
+    const matrix1 = [
+      [1,1,1],
+      [1,0,1],
+      [1,1,1]
+    ]
+    const matrix2 = [
+      [0,1,2,0],
+      [3,4,5,2],
+      [1,3,1,5]
+    ]
+    console.log(setZeroes(matrix1))
+    console.log(setZeroes(matrix2))
+  </script>
+</body>
+</html>

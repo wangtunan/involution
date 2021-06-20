@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>长度最小的子数组</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/minimum-size-subarray-sum/
+    // 思路：
+    // 1、先移动fast指针，一直到total大于taget，记录min
+    // 2、保持上一步fast指针不动，移动slow向fast靠近，同步更新min
+    function minSubArrayLen (target, nums) {
+      const len = nums.length
+      if (len === 0) return 0
+      let min = Infinity
+      let fast = 0, slow = 0
+      let total = 0
+      while (fast < len) {
+        total += nums[fast]
+        while (total >= target) {
+          min = Math.min(min, fast - slow + 1)
+          total -= nums[slow]
+          slow++
+        }
+        fast++
+      }
+      return min === Infinity ? 0 : min
+    }
+    console.log(1, minSubArrayLen(4, [1,4,4]))
+    console.log(2, minSubArrayLen(7, [2,3,1,2,4,3]))
+    console.log(0, minSubArrayLen(11, [1,1,1,1,1,1,1,1]))
+    console.log(3, minSubArrayLen(11, [1,2,3,4,5]))
+  </script>
+</body>
+</html>

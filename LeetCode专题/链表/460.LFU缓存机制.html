@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LFU缓存机制-链表实现方式</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/lfu-cache/
+    // LFU缓存机制：淘汰最不经常使用的节点，每个节点有一个使用次数变量， get和put会分别累加一次
+    class Node {
+      constructor (key, value, counter) {
+        this.key = key
+        this.value = value
+        this.counter = counter
+        this.prev = null
+        this.next = null
+      }
+    }
+    class LFUCache {
+      constructor (max) {
+        this.size = 0
+        this.max = max
+        this.cache = {}
+        this.head = new Node()
+        this.tail = new Node()
+        this.head.next = this.tail
+        this.tail.prev = this.head
+      }
+      get (key) {
+        if (key in this.cache) {
+          const node = this.extractNode(this.cache[key])
+          node.counter++
+          this.insertToHead(node)
+          return node.value
+        }
+        return -1
+      }
+      put (key, value) {
+        let node
+        if (key in this.cache) {
+          node = this.extractNode(this.cache[key])
+          node.value = value
+          node.counter++
+        } else {
+          node = new Node(key, value, 1)
+          this.size++
+          this.cache[key] = node
+        }
+        this.insertToHead(node)
+        this.checkSize(node)
+      }
+      extractNode (node) {
+        const prev = node.prev
+        const next = node.next
+        prev.next = next
+        next.prev = prev
+        node.prev = null
+        node.next = null
+        return node
+      }
+      insertToHead (node) {
+        const head = this.head
+        const firstNode = head.next
+        head.next = node
+        node.prev = head
+        node.next = firstNode
+        firstNode.prev = node
+        return node
+      }
+      getMinNodes (node) {
+        let current = this.head.next
+        let res = []
+        let minCounter = Infinity
+        while (current.next !== null) {
+          const counter = current.counter
+          if (node.key !== current.key) {
+            if (minCounter > counter) {
+              res = [current]
+              minCounter = counter
+            } else if (minCounter === counter) {
+              res.push(current)
+            }
+          }
+          current = current.next
+        }
+        return res
+      }
+      checkSize (node) {
+        if (this.size > this.max) {
+          const nodes = this.getMinNodes(node)
+          const deleteNode = nodes.length ? nodes.pop() : node
+          this.extractNode(deleteNode)
+          this.size--
+          delete this.cache[deleteNode.key]
+        }
+      }
+    }
+    const lfuCache = new LFUCache(2)
+    lfuCache.put(1, 1)
+    lfuCache.put(2, 2)
+    console.log(1, lfuCache.get(1))
+    lfuCache.put(3, 3)
+    console.log(-1, lfuCache.get(2))
+    console.log(3, lfuCache.get(3))
+    lfuCache.put(4, 4)
+    console.log(-1, lfuCache.get(1))
+    console.log(3, lfuCache.get(3))
+    console.log(4, lfuCache.get(4))
+  </script>
+</body>
+</html>

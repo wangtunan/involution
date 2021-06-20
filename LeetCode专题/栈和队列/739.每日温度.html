@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>每日温度</title>
+</head>
+<body>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/daily-temperatures/
+    // way1: 暴力双循环法
+    function dailyTemperatures1 (T) {
+      const len = T.length
+      const res = new Array(len).fill(0)
+      for (let i = 0; i < len; i++) {
+        for (let j = i + 1; j < len; j++) {
+          if (T[j] > T[i]) {
+            res[i] = j - i
+            break
+          }
+        }
+      }
+      return res
+    }
+    // way2: 栈结构法
+    // 思路：
+    // 1、当前遍历元素比栈顶元素小，则当前元素入栈
+    // 2、当前遍历元素比栈顶元素小，则栈顶元素出栈，再比较栈下一个元素，小则出栈，大则当前元素入栈
+    function dailyTemperatures2 (T) {
+      const len = T.length
+      const res = new Array(len).fill(0)
+      const stack = [0]
+      for (let i = 1; i < len; i++) {
+        while (stack.length && T[i] > T[stack[stack.length-1]]) {
+          const peek = stack.pop()
+          res[peek] = i - peek
+        }
+        stack.push(i)
+      }
+      return res
+    }
+    // [1, 1, 4, 2, 1, 1, 0, 0]
+    console.log(dailyTemperatures1([73, 74, 75, 71, 69, 72, 76, 73]))
+    console.log(dailyTemperatures2([73, 74, 75, 71, 69, 72, 76, 73]))
+  </script>
+</body>
+</html>

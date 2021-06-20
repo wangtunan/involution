@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>验证回文串</title>
+</head>
+<body>
+  <script>
+    // leetcode: https://leetcode-cn.com/problems/valid-palindrome/
+
+    function isPalindrome (s) {
+      const newStr = s.replace(/[^a-zA-Z0-9]/ig, '').toLowerCase()
+      if (newStr.length === 0 || newStr.length === 1) return true
+      let left = 0, right = newStr.length - 1
+      while(left < right) {
+        if (newStr[left] !== newStr[right]) {
+          return false
+        }
+        left++
+        right--
+      }
+      return true
+    }
+
+    console.log(isPalindrome('A man, a plan, a canal: Panama'))
+    console.log(isPalindrome('race a car'))
+  </script>
+</body>
+</html>

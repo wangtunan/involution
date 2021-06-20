@@ -1,6 +1,6 @@
 import { Equal, Expect } from "../index"
 
-// 用法：去除字符串左侧的空白符
+// 用法：去除字符串中的空白符
 type Space = ' ' | '\n' | '\t'
 type TrimLeft<S extends string> = S extends `${Space}${infer R}` ? TrimLeft<R> : S
 type Trim<S extends string> = S extends (`${Space}${infer R}` | `${infer R}${Space}`) ? Trim<R> : S

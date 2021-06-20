@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>回文联表</title>
+</head>
+<body>
+  <script src="./utils.js"></script>
+  <script>
+    // leetCode: https://leetcode-cn.com/problems/palindrome-linked-list/
+    function isPalindrome (head) {
+      if (head === null) return false
+      if (head.next === null) return true
+      const stack = []
+      let curr = head
+      // 入栈
+      while (curr) {
+        stack.push(curr.val)
+        curr = curr.next
+      }
+      // 双指针判断回文
+      if (stack.length) {
+        let left = 0, right = stack.length - 1
+        while (left < right) {
+          if (stack[left] !== stack[right]) {
+            return false
+          }
+          left++
+          right--
+        }
+      }
+      return true
+    }
+    const list = new LinkedList()
+    list.push(1)
+    list.push(2)
+    list.push(2)
+    list.push(1)
+    console.log(isPalindrome(list.getHead()))
+  </script>
+</body>
+</html>

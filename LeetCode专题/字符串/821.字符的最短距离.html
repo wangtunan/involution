@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>字符的最短距离</title>
+</head>
+<body>
+  <script>
+    // leetcode: https://leetcode-cn.com/problems/shortest-distance-to-a-character/
+
+    // 窗口解决办法
+    function shortestToChar (s, c) {
+      let left = s[0] === c ? 0 : Infinity
+      let right = s.indexOf(c)
+      const res =  new Array(s.length).fill(0)
+
+      for (let index = 0; index < s.length; index++) {
+        // index到左窗口的值和到右窗口的值的最小值。
+        res[index] = Math.min(Math.abs(index - left), Math.abs(index - right))
+
+        // 第一个窗口遍历完毕
+        if (index === right) {
+          left = right
+          right = s.indexOf(c, left + 1)
+        }
+      }
+      return res
+    }
+    console.log(shortestToChar('aaab', 'b'))          // [3,2,1,0]
+    console.log(shortestToChar('loveleetcode', 'e'))  // [3,2,1,0,1,0,0,1,2,2,1,0]
+  </script>
+</body>
+</html>
