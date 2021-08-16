@@ -6,24 +6,24 @@ type AppendToObject< T extends object, U extends BasicKeyType, V extends any> = 
 }
 // interface
 type Expect1 = {
-  id: 1;
+  id: number;
   home: boolean;
 }
 type Expect2 = {
-  id: 1;
-  home: 1;
+  id: number;
+  home: number;
 }
 type Expect3 = {
-  id: 1;
+  id: number;
   isMotherRussia: false | undefined;
 }
 
 // example
-type obj = { id: 1 }
-type result = AppendToObject<obj, 'value', 4>
+type obj = { id: number; }
+type result = AppendToObject<obj, 'value', string>
 
 type testCases = [
   Expect<Equal<AppendToObject<obj, 'home', boolean>, Expect1>>,
-  Expect<Equal<AppendToObject<obj, 'home', 1>, Expect2>>,
+  Expect<Equal<AppendToObject<obj, 'home', number>, Expect2>>,
   Expect<Equal<AppendToObject<obj, 'isMotherRussia', false | undefined>, Expect3>>,
 ]
