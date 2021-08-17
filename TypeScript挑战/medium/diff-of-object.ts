@@ -1,8 +1,8 @@
 import { Equal, Expect } from '../index'
 // 用法：找出两个类型的不同部分(diff)
-type MyKeys = Exclude<keyof Foo | keyof Bar, keyof (Foo | Bar)>
-type Diff<O, O1> = {
-  [k in MyKeys]: k extends keyof O ? O[k] : k extends keyof O1 ? O1[k] : never
+type DiffKeys<T, U> = Exclude<keyof T | keyof U, keyof (T | U)>
+type Diff<T, U> = {
+  [k in DiffKeys<T, U>]: k extends keyof T ? T[k] : k extends keyof U ? U[k] : never
 }
 
 // interface
