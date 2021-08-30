@@ -11,7 +11,7 @@ type FilterOut<
       : K
 
 // example
-type result = FilterOut<[1, 'a', never], 'a'>
+type result = FilterOut<[1, 'a', 2], 'a' | 1>
 
 // test
 type testCases = [
