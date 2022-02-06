@@ -1,7 +1,12 @@
 import { Equal, Expect } from '../index'
 
 // 用法：取出Promise的包裹类型，例如Promise<number> => number
-type PromiseType<T> = T extends Promise<infer R> ? R : never
+type PromiseType<T> =
+  T extends Promise<infer R>
+    ? R extends Promise<any>
+      ? PromiseType<R>
+      : R
+    : never
 
 // example
 function getInfo (): Promise<number | string> {
@@ -15,5 +20,6 @@ type testCases = [
   Expect<Equal<number, PromiseType<Promise<number>>>>,
   Expect<Equal<number | string, PromiseType<Promise<number | string>>>>,
   Expect<Equal<() => number, PromiseType<Promise<() => number>>>>,
-  Expect<Equal<number[], PromiseType<Promise<number[]>>>>
+  Expect<Equal<number[], PromiseType<Promise<number[]>>>>,
+  Expect<Equal<number, PromiseType<Promise<Promise<number>>>>>
 ]

@@ -1,9 +1,9 @@
 import { Expect, Alike } from '../index'
 
-// 用法：只在类型上面定义Chainable的options和get方法
+// 用法：在类型上面定义Chainable的options和get方法
 type Chainable<T> = {
   options<K extends string, V>(key: K, value: V): Chainable<T & {[k in K]: V}>
-  get(): { [K in keyof T]: T[K] }
+  get(): T
 }
 type Expected = {
   foo: number

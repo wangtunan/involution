@@ -3,7 +3,7 @@ import { Expect, Alike } from '../index'
 // tips:
 // 1、K = any兼容K不传递
 // 2、T & U 表示T和U属性合并
-export type MyReadonly2<T, K extends keyof T = keyof T> = T & {
+export type MyReadonly2<T, K extends keyof T = keyof T> = Omit<T, K> & {
   readonly [P in K]: T[P]
 };
 

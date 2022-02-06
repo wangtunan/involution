@@ -1,8 +1,5 @@
 import { Equal, Expect } from '../index'
 // 用法：实现Array.prototype.includes方法
-// 简单版
-// type MyIncludes<T extends readonly any[], U> = U extends T[number] ? true : false
-// 完善版
 type MyIncludes<T extends readonly any[], U> = 
   T extends [infer R, ...infer L]
     ? Equal<R, U> extends true

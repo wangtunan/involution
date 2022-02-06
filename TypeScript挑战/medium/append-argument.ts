@@ -1,7 +1,7 @@
 import { Equal, Expect } from "../index"
 
 // 用法：向函数Fn中追加一个参数
-type AppendArgument<Fn, A> = Fn extends (...args: infer R) => infer T ? (...args: [...R, A]) => T : never
+type AppendArgument<Fn, A> = Fn extends (...args: infer T) => infer R ? (...args: [...T, A]) => R : never
 
 // interface
 type numberFunc = (a: number, b: number) => number

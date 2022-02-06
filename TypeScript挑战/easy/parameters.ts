@@ -1,5 +1,5 @@
 import { Expect, Equal } from '../index'
-// 获取一个函数的参数类型到一个元祖中
+// 用法：获取一个函数的参数类型到一个元祖中
 type MyParameters<T extends (...args: any[]) => any> = T extends (...args: infer R) => any ? R : never
 
 // example

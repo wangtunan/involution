@@ -1,6 +1,6 @@
 import { Equal, Expect } from '../index'
 // 用法：在交集中去查找类型
-type LookUp<U, T> = U extends { type: T } ? U : never
+type LookUp<U extends { type: string; }, T extends string> = U extends { type: T } ? U : never
 // interface
 interface Cat {
   type: 'cat'
