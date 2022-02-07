@@ -1,7 +1,7 @@
 import { Equal, Expect } from '../index'
 // 用法：向指定对象添加一个额外的属性(key/value)
 type BasicKeyType = string | number | symbol 
-type AppendToObject< T extends object, U extends BasicKeyType, V extends any> = {
+type AppendToObject<T, U extends BasicKeyType, V> = {
   [P in keyof T | U]: P extends keyof T ? T[P] : V
 }
 // interface
