@@ -14,15 +14,12 @@ type Person = {
   address?: string;
   sex: undefined;
 }
-type Expected = {
-  age: number;
-  sex: undefined;
-}
 
 // example
 type result = GetRequired<Person>
 
 // test
 type testCases = [
-  Expect<Equal<GetRequired<Person>, Expected>>
+  Expect<Equal<GetRequired<{ foo: number, bar?: string }>, { foo: number }>>,
+  Expect<Equal<GetRequired<{ foo: undefined, bar?: undefined }>, { foo: undefined }>>,
 ]
