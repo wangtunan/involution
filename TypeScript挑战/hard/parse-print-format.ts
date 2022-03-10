@@ -13,7 +13,7 @@ type ControlMap = {
 type ParsePrintFormat<
   S extends string,
   R extends string[] = []
-> = S extends `${infer S1}%${infer Char}${infer S2}`
+> = S extends `${string}%${infer Char}${infer S2}`
     ? Char extends keyof ControlMap
       ? ParsePrintFormat<S2, [...R, ControlMap[Char]]>
       : ParsePrintFormat<S2, R>
@@ -21,6 +21,7 @@ type ParsePrintFormat<
 
 type result = ParsePrintFormat<'Hello %s: score is %d'>
 
+// NOTE %%有特殊含义 https://stackoverflow.com/questions/1860159/how-to-escape-the-percent-sign-in-cs-printf
 type testCases = [
   Expect<Equal<ParsePrintFormat<''>, []>>,
   Expect<Equal<ParsePrintFormat<'Any string.'>, []>>,
