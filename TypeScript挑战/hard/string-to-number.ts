@@ -1,3 +1,5 @@
+import { Equal, Expect } from '../index'
+
 // 用法：将字符串数字转换为真正的数字
 type Digital = '0'|'1'|'2'|'3'|'4'|'5'|'6'|'7'|'8'|'9'
 type MakeArray<N extends string, T extends any[] = []> = N extends `${T['length']}` ? T : MakeArray<N, [...T, 0]>
@@ -12,4 +14,14 @@ type StringToNumber<
         : never
       : T['length']
 
+// example
 type result = StringToNumber<'999'>
+
+
+// test
+type cases = [
+  Expect<Equal<StringToNumber<'0'>, 0>>,
+  Expect<Equal<StringToNumber<'5'>, 5>>,
+  Expect<Equal<StringToNumber<'12'>, 12>>,
+  Expect<Equal<StringToNumber<'27'>, 27>>,
+]

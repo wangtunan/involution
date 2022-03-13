@@ -13,7 +13,7 @@ type Format<
       : string
 
 // example
-type result = Format<'a%sbc'> // (x: string) => string
+type result = Format<'a%sbc'>
 
 
 type testCases = [
