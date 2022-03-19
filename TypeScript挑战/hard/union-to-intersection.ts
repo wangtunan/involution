@@ -1,7 +1,6 @@
 import { Equal, Expect } from '../index'
 // 用法：联合类型转换成其交集
-
-type UnionToIntersection<U> = 
+export type UnionToIntersection<U> = 
   (U extends any 
     ? (x: U) => any 
     : never
